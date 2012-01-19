@@ -423,6 +423,12 @@ Based on the following sources:
 <text x="-2.54" y="-2.54" size="1.778" layer="96" rot="R90">&gt;VALUE</text>
 <pin name="VCC" x="0" y="-2.54" visible="off" length="short" direction="sup" rot="R90"/>
 </symbol>
+<symbol name="AGND">
+<wire x1="-1.905" y1="0" x2="1.905" y2="0" width="0.254" layer="94"/>
+<wire x1="-1.0922" y1="-0.508" x2="1.0922" y2="-0.508" width="0.254" layer="94"/>
+<text x="-2.54" y="-5.08" size="1.778" layer="96" rot="R90">&gt;VALUE</text>
+<pin name="AGND" x="0" y="2.54" visible="off" length="short" direction="sup" rot="R270"/>
+</symbol>
 </symbols>
 <devicesets>
 <deviceset name="GND" prefix="GND">
@@ -442,6 +448,19 @@ Based on the following sources:
 <description>&lt;b&gt;SUPPLY SYMBOL&lt;/b&gt;</description>
 <gates>
 <gate name="VCC" symbol="VCC" x="0" y="0"/>
+</gates>
+<devices>
+<device name="">
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="AGND" prefix="AGND">
+<description>&lt;b&gt;SUPPLY SYMBOL&lt;/b&gt;</description>
+<gates>
+<gate name="VR1" symbol="AGND" x="0" y="0"/>
 </gates>
 <devices>
 <device name="">
@@ -864,39 +883,6 @@ Low profile connectors, straight&lt;p&gt;
 </deviceset>
 </devicesets>
 </library>
-<library name="supply2">
-<description>&lt;b&gt;Supply Symbols&lt;/b&gt;&lt;p&gt;
-GND, VCC, 0V, +5V, -5V, etc.&lt;p&gt;
-Please keep in mind, that these devices are necessary for the
-automatic wiring of the supply signals.&lt;p&gt;
-The pin name defined in the symbol is identical to the net which is to be wired automatically.&lt;p&gt;
-In this library the device names are the same as the pin names of the symbols, therefore the correct signal names appear next to the supply symbols in the schematic.&lt;p&gt;
-&lt;author&gt;Created by librarian@cadsoft.de&lt;/author&gt;</description>
-<packages>
-</packages>
-<symbols>
-<symbol name="VEE">
-<circle x="0" y="1.27" radius="1.27" width="0.254" layer="94"/>
-<text x="-1.905" y="3.175" size="1.778" layer="96">&gt;VALUE</text>
-<pin name="VEE" x="0" y="-2.54" visible="off" length="short" direction="sup" rot="R90"/>
-</symbol>
-</symbols>
-<devicesets>
-<deviceset name="VEE" prefix="SUPPLY">
-<description>&lt;b&gt;SUPPLY SYMBOL&lt;/b&gt;</description>
-<gates>
-<gate name="G$1" symbol="VEE" x="0" y="0"/>
-</gates>
-<devices>
-<device name="">
-<technologies>
-<technology name=""/>
-</technologies>
-</device>
-</devices>
-</deviceset>
-</devicesets>
-</library>
 <library name="holes">
 <description>&lt;b&gt;Mounting Holes and Pads&lt;/b&gt;&lt;p&gt;
 &lt;author&gt;Created by librarian@cadsoft.de&lt;/author&gt;</description>
@@ -1162,15 +1148,6 @@ In this library the device names are the same as the pin names of the symbols, t
 <part name="GND3" library="supply1" deviceset="GND" device=""/>
 <part name="GND2" library="supply1" deviceset="GND" device=""/>
 <part name="SV1" library="con-harting-ml" deviceset="ML10" device=""/>
-<part name="SUPPLY2" library="supply2" deviceset="VEE" device=""/>
-<part name="SUPPLY3" library="supply2" deviceset="VEE" device=""/>
-<part name="SUPPLY4" library="supply2" deviceset="VEE" device=""/>
-<part name="SUPPLY5" library="supply2" deviceset="VEE" device=""/>
-<part name="SUPPLY6" library="supply2" deviceset="VEE" device=""/>
-<part name="SUPPLY7" library="supply2" deviceset="VEE" device=""/>
-<part name="SUPPLY8" library="supply2" deviceset="VEE" device=""/>
-<part name="SUPPLY9" library="supply2" deviceset="VEE" device=""/>
-<part name="SUPPLY10" library="supply2" deviceset="VEE" device=""/>
 <part name="GND1" library="supply1" deviceset="GND" device=""/>
 <part name="GND4" library="supply1" deviceset="GND" device=""/>
 <part name="GND5" library="supply1" deviceset="GND" device=""/>
@@ -1189,14 +1166,6 @@ In this library the device names are the same as the pin names of the symbols, t
 <part name="2P2" library="alps" deviceset="RK09K" device="113" value="100k"/>
 <part name="2P1" library="alps" deviceset="RK09K" device="113" value="100k"/>
 <part name="GND11" library="supply1" deviceset="GND" device=""/>
-<part name="SUPPLY1" library="supply2" deviceset="VEE" device=""/>
-<part name="SUPPLY11" library="supply2" deviceset="VEE" device=""/>
-<part name="SUPPLY12" library="supply2" deviceset="VEE" device=""/>
-<part name="SUPPLY13" library="supply2" deviceset="VEE" device=""/>
-<part name="SUPPLY14" library="supply2" deviceset="VEE" device=""/>
-<part name="SUPPLY15" library="supply2" deviceset="VEE" device=""/>
-<part name="SUPPLY16" library="supply2" deviceset="VEE" device=""/>
-<part name="SUPPLY17" library="supply2" deviceset="VEE" device=""/>
 <part name="GND12" library="supply1" deviceset="GND" device=""/>
 <part name="GND13" library="supply1" deviceset="GND" device=""/>
 <part name="GND14" library="supply1" deviceset="GND" device=""/>
@@ -1208,6 +1177,29 @@ In this library the device names are the same as the pin names of the symbols, t
 <part name="H1" library="holes" deviceset="MOUNT-PAD-ROUND" device="2.8"/>
 <part name="H2" library="holes" deviceset="MOUNT-PAD-ROUND" device="2.8"/>
 <part name="H3" library="holes" deviceset="MOUNT-PAD-ROUND" device="2.8"/>
+<part name="AGND1" library="supply1" deviceset="AGND" device=""/>
+<part name="AGND2" library="supply1" deviceset="AGND" device=""/>
+<part name="AGND3" library="supply1" deviceset="AGND" device=""/>
+<part name="AGND4" library="supply1" deviceset="AGND" device=""/>
+<part name="AGND5" library="supply1" deviceset="AGND" device=""/>
+<part name="AGND6" library="supply1" deviceset="AGND" device=""/>
+<part name="AGND7" library="supply1" deviceset="AGND" device=""/>
+<part name="AGND8" library="supply1" deviceset="AGND" device=""/>
+<part name="AGND9" library="supply1" deviceset="AGND" device=""/>
+<part name="AGND10" library="supply1" deviceset="AGND" device=""/>
+<part name="AGND11" library="supply1" deviceset="AGND" device=""/>
+<part name="AGND12" library="supply1" deviceset="AGND" device=""/>
+<part name="AGND13" library="supply1" deviceset="AGND" device=""/>
+<part name="AGND14" library="supply1" deviceset="AGND" device=""/>
+<part name="AGND15" library="supply1" deviceset="AGND" device=""/>
+<part name="AGND16" library="supply1" deviceset="AGND" device=""/>
+<part name="AGND17" library="supply1" deviceset="AGND" device=""/>
+<part name="GND20" library="supply1" deviceset="GND" device=""/>
+<part name="GND21" library="supply1" deviceset="GND" device=""/>
+<part name="GND22" library="supply1" deviceset="GND" device=""/>
+<part name="GND23" library="supply1" deviceset="GND" device=""/>
+<part name="P+2" library="supply1" deviceset="VCC" device=""/>
+<part name="P+3" library="supply1" deviceset="VCC" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -1231,17 +1223,6 @@ In this library the device names are the same as the pin names of the symbols, t
 </instance>
 <instance part="GND2" gate="1" x="109.22" y="78.74" rot="R180"/>
 <instance part="SV1" gate="G$1" x="63.5" y="20.32" rot="R270"/>
-<instance part="SUPPLY2" gate="G$1" x="78.74" y="210.82" rot="R180"/>
-<instance part="SUPPLY3" gate="G$1" x="104.14" y="210.82" rot="R180"/>
-<instance part="SUPPLY4" gate="G$1" x="78.74" y="180.34" rot="R180"/>
-<instance part="SUPPLY5" gate="G$1" x="104.14" y="180.34" rot="R180"/>
-<instance part="SUPPLY6" gate="G$1" x="78.74" y="149.86" rot="R180"/>
-<instance part="SUPPLY7" gate="G$1" x="104.14" y="149.86" rot="R180"/>
-<instance part="SUPPLY8" gate="G$1" x="104.14" y="119.38" rot="R180"/>
-<instance part="SUPPLY9" gate="G$1" x="78.74" y="119.38" rot="R180"/>
-<instance part="SUPPLY10" gate="G$1" x="68.58" y="7.62" smashed="yes" rot="R180">
-<attribute name="VALUE" x="72.39" y="3.175" size="1.778" layer="96" rot="R90"/>
-</instance>
 <instance part="GND1" gate="1" x="78.74" y="139.7" rot="R180"/>
 <instance part="GND4" gate="1" x="78.74" y="170.18" rot="R180"/>
 <instance part="GND5" gate="1" x="104.14" y="139.7" rot="R180"/>
@@ -1260,14 +1241,6 @@ In this library the device names are the same as the pin names of the symbols, t
 <instance part="2P2" gate="G$1" x="38.1" y="190.5"/>
 <instance part="2P1" gate="G$1" x="38.1" y="220.98"/>
 <instance part="GND11" gate="1" x="43.18" y="78.74" rot="R180"/>
-<instance part="SUPPLY1" gate="G$1" x="12.7" y="210.82" rot="R180"/>
-<instance part="SUPPLY11" gate="G$1" x="38.1" y="210.82" rot="R180"/>
-<instance part="SUPPLY12" gate="G$1" x="12.7" y="180.34" rot="R180"/>
-<instance part="SUPPLY13" gate="G$1" x="38.1" y="180.34" rot="R180"/>
-<instance part="SUPPLY14" gate="G$1" x="12.7" y="149.86" rot="R180"/>
-<instance part="SUPPLY15" gate="G$1" x="38.1" y="149.86" rot="R180"/>
-<instance part="SUPPLY16" gate="G$1" x="38.1" y="119.38" rot="R180"/>
-<instance part="SUPPLY17" gate="G$1" x="12.7" y="119.38" rot="R180"/>
 <instance part="GND12" gate="1" x="12.7" y="139.7" rot="R180"/>
 <instance part="GND13" gate="1" x="12.7" y="170.18" rot="R180"/>
 <instance part="GND14" gate="1" x="38.1" y="139.7" rot="R180"/>
@@ -1279,6 +1252,43 @@ In this library the device names are the same as the pin names of the symbols, t
 <instance part="H1" gate="G$1" x="5.08" y="5.08"/>
 <instance part="H2" gate="G$1" x="5.08" y="12.7"/>
 <instance part="H3" gate="G$1" x="5.08" y="20.32"/>
+<instance part="AGND1" gate="VR1" x="68.58" y="7.62"/>
+<instance part="AGND2" gate="VR1" x="12.7" y="119.38"/>
+<instance part="AGND3" gate="VR1" x="38.1" y="119.38"/>
+<instance part="AGND4" gate="VR1" x="38.1" y="149.86"/>
+<instance part="AGND5" gate="VR1" x="12.7" y="149.86"/>
+<instance part="AGND6" gate="VR1" x="12.7" y="180.34"/>
+<instance part="AGND7" gate="VR1" x="38.1" y="180.34"/>
+<instance part="AGND8" gate="VR1" x="12.7" y="210.82"/>
+<instance part="AGND9" gate="VR1" x="38.1" y="210.82"/>
+<instance part="AGND10" gate="VR1" x="78.74" y="210.82"/>
+<instance part="AGND11" gate="VR1" x="104.14" y="210.82"/>
+<instance part="AGND12" gate="VR1" x="104.14" y="180.34"/>
+<instance part="AGND13" gate="VR1" x="78.74" y="180.34"/>
+<instance part="AGND14" gate="VR1" x="78.74" y="149.86"/>
+<instance part="AGND15" gate="VR1" x="104.14" y="149.86"/>
+<instance part="AGND16" gate="VR1" x="104.14" y="119.38"/>
+<instance part="AGND17" gate="VR1" x="78.74" y="119.38"/>
+<instance part="MX1" gate="P" x="-30.48" y="63.5"/>
+<instance part="MX2" gate="P" x="-17.78" y="63.5"/>
+<instance part="GND20" gate="1" x="-17.78" y="53.34" smashed="yes">
+<attribute name="VALUE" x="-13.335" y="52.07" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="GND21" gate="1" x="-22.86" y="53.34" smashed="yes">
+<attribute name="VALUE" x="-15.875" y="52.07" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="GND22" gate="1" x="-30.48" y="53.34" smashed="yes">
+<attribute name="VALUE" x="-23.495" y="52.07" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="GND23" gate="1" x="-35.56" y="53.34" smashed="yes">
+<attribute name="VALUE" x="-28.575" y="52.07" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="P+2" gate="VCC" x="-17.78" y="73.66" smashed="yes">
+<attribute name="VALUE" x="-20.955" y="75.565" size="1.778" layer="96" rot="R270"/>
+</instance>
+<instance part="P+3" gate="VCC" x="-30.48" y="73.66" smashed="yes">
+<attribute name="VALUE" x="-33.655" y="75.565" size="1.778" layer="96" rot="R270"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -1457,6 +1467,22 @@ In this library the device names are the same as the pin names of the symbols, t
 <pinref part="GND3" gate="1" pin="GND"/>
 <wire x1="60.96" y1="33.02" x2="60.96" y2="27.94" width="0.1524" layer="91"/>
 </segment>
+<segment>
+<pinref part="MX2" gate="P" pin="GND"/>
+<pinref part="GND20" gate="1" pin="GND"/>
+</segment>
+<segment>
+<pinref part="MX1" gate="P" pin="GND"/>
+<pinref part="GND22" gate="1" pin="GND"/>
+</segment>
+<segment>
+<pinref part="MX1" gate="P" pin="VEE"/>
+<pinref part="GND23" gate="1" pin="GND"/>
+</segment>
+<segment>
+<pinref part="MX2" gate="P" pin="VEE"/>
+<pinref part="GND21" gate="1" pin="GND"/>
+</segment>
 </net>
 <net name="A" class="0">
 <segment>
@@ -1480,77 +1506,6 @@ In this library the device names are the same as the pin names of the symbols, t
 <wire x1="83.82" y1="129.54" x2="93.98" y2="129.54" width="0.1524" layer="91"/>
 <pinref part="MX2" gate="A" pin="X3"/>
 <wire x1="93.98" y1="129.54" x2="93.98" y2="73.66" width="0.1524" layer="91"/>
-</segment>
-</net>
-<net name="VEE" class="0">
-<segment>
-<pinref part="3P1" gate="G$1" pin="A"/>
-<pinref part="SUPPLY2" gate="G$1" pin="VEE"/>
-</segment>
-<segment>
-<pinref part="3P2" gate="G$1" pin="A"/>
-<pinref part="SUPPLY4" gate="G$1" pin="VEE"/>
-</segment>
-<segment>
-<pinref part="4P2" gate="G$1" pin="A"/>
-<pinref part="SUPPLY5" gate="G$1" pin="VEE"/>
-</segment>
-<segment>
-<pinref part="3P3" gate="G$1" pin="A"/>
-<pinref part="SUPPLY6" gate="G$1" pin="VEE"/>
-</segment>
-<segment>
-<pinref part="4P3" gate="G$1" pin="A"/>
-<pinref part="SUPPLY7" gate="G$1" pin="VEE"/>
-</segment>
-<segment>
-<pinref part="4P4" gate="G$1" pin="A"/>
-<pinref part="SUPPLY8" gate="G$1" pin="VEE"/>
-</segment>
-<segment>
-<pinref part="3P4" gate="G$1" pin="A"/>
-<pinref part="SUPPLY9" gate="G$1" pin="VEE"/>
-</segment>
-<segment>
-<pinref part="4P1" gate="G$1" pin="A"/>
-<pinref part="SUPPLY3" gate="G$1" pin="VEE"/>
-</segment>
-<segment>
-<pinref part="1P1" gate="G$1" pin="A"/>
-<pinref part="SUPPLY1" gate="G$1" pin="VEE"/>
-</segment>
-<segment>
-<pinref part="1P2" gate="G$1" pin="A"/>
-<pinref part="SUPPLY12" gate="G$1" pin="VEE"/>
-</segment>
-<segment>
-<pinref part="2P2" gate="G$1" pin="A"/>
-<pinref part="SUPPLY13" gate="G$1" pin="VEE"/>
-</segment>
-<segment>
-<pinref part="1P3" gate="G$1" pin="A"/>
-<pinref part="SUPPLY14" gate="G$1" pin="VEE"/>
-</segment>
-<segment>
-<pinref part="2P3" gate="G$1" pin="A"/>
-<pinref part="SUPPLY15" gate="G$1" pin="VEE"/>
-</segment>
-<segment>
-<pinref part="2P4" gate="G$1" pin="A"/>
-<pinref part="SUPPLY16" gate="G$1" pin="VEE"/>
-</segment>
-<segment>
-<pinref part="1P4" gate="G$1" pin="A"/>
-<pinref part="SUPPLY17" gate="G$1" pin="VEE"/>
-</segment>
-<segment>
-<pinref part="2P1" gate="G$1" pin="A"/>
-<pinref part="SUPPLY11" gate="G$1" pin="VEE"/>
-</segment>
-<segment>
-<pinref part="SUPPLY10" gate="G$1" pin="VEE"/>
-<pinref part="SV1" gate="G$1" pin="9"/>
-<wire x1="68.58" y1="10.16" x2="68.58" y2="12.7" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="1P1" class="0">
@@ -1642,6 +1597,14 @@ In this library the device names are the same as the pin names of the symbols, t
 <pinref part="P+1" gate="VCC" pin="VCC"/>
 <wire x1="60.96" y1="7.62" x2="60.96" y2="12.7" width="0.1524" layer="91"/>
 </segment>
+<segment>
+<pinref part="MX2" gate="P" pin="VCC"/>
+<pinref part="P+2" gate="VCC" pin="VCC"/>
+</segment>
+<segment>
+<pinref part="MX1" gate="P" pin="VCC"/>
+<pinref part="P+3" gate="VCC" pin="VCC"/>
+</segment>
 </net>
 <net name="X1" class="0">
 <segment>
@@ -1649,6 +1612,77 @@ In this library the device names are the same as the pin names of the symbols, t
 <pinref part="SV1" gate="G$1" pin="2"/>
 <wire x1="20.32" y1="48.26" x2="20.32" y2="27.94" width="0.1524" layer="91"/>
 <wire x1="20.32" y1="27.94" x2="58.42" y2="27.94" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="AGND" class="0">
+<segment>
+<pinref part="SV1" gate="G$1" pin="9"/>
+<wire x1="68.58" y1="10.16" x2="68.58" y2="12.7" width="0.1524" layer="91"/>
+<pinref part="AGND1" gate="VR1" pin="AGND"/>
+</segment>
+<segment>
+<pinref part="1P4" gate="G$1" pin="A"/>
+<pinref part="AGND2" gate="VR1" pin="AGND"/>
+</segment>
+<segment>
+<pinref part="2P4" gate="G$1" pin="A"/>
+<pinref part="AGND3" gate="VR1" pin="AGND"/>
+</segment>
+<segment>
+<pinref part="2P3" gate="G$1" pin="A"/>
+<pinref part="AGND4" gate="VR1" pin="AGND"/>
+</segment>
+<segment>
+<pinref part="1P3" gate="G$1" pin="A"/>
+<pinref part="AGND5" gate="VR1" pin="AGND"/>
+</segment>
+<segment>
+<pinref part="1P2" gate="G$1" pin="A"/>
+<pinref part="AGND6" gate="VR1" pin="AGND"/>
+</segment>
+<segment>
+<pinref part="2P2" gate="G$1" pin="A"/>
+<pinref part="AGND7" gate="VR1" pin="AGND"/>
+</segment>
+<segment>
+<pinref part="1P1" gate="G$1" pin="A"/>
+<pinref part="AGND8" gate="VR1" pin="AGND"/>
+</segment>
+<segment>
+<pinref part="2P1" gate="G$1" pin="A"/>
+<pinref part="AGND9" gate="VR1" pin="AGND"/>
+</segment>
+<segment>
+<pinref part="3P1" gate="G$1" pin="A"/>
+<pinref part="AGND10" gate="VR1" pin="AGND"/>
+</segment>
+<segment>
+<pinref part="4P1" gate="G$1" pin="A"/>
+<pinref part="AGND11" gate="VR1" pin="AGND"/>
+</segment>
+<segment>
+<pinref part="4P2" gate="G$1" pin="A"/>
+<pinref part="AGND12" gate="VR1" pin="AGND"/>
+</segment>
+<segment>
+<pinref part="3P2" gate="G$1" pin="A"/>
+<pinref part="AGND13" gate="VR1" pin="AGND"/>
+</segment>
+<segment>
+<pinref part="3P3" gate="G$1" pin="A"/>
+<pinref part="AGND14" gate="VR1" pin="AGND"/>
+</segment>
+<segment>
+<pinref part="4P3" gate="G$1" pin="A"/>
+<pinref part="AGND15" gate="VR1" pin="AGND"/>
+</segment>
+<segment>
+<pinref part="4P4" gate="G$1" pin="A"/>
+<pinref part="AGND16" gate="VR1" pin="AGND"/>
+</segment>
+<segment>
+<pinref part="3P4" gate="G$1" pin="A"/>
+<pinref part="AGND17" gate="VR1" pin="AGND"/>
 </segment>
 </net>
 </nets>
