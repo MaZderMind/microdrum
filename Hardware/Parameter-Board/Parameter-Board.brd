@@ -475,7 +475,7 @@ design rules under a new name.</description>
 <element name="2P3" library="alps" package="RK09K113" value="100k" x="35.56" y="45.085"/>
 <element name="2P2" library="alps" package="RK09K113" value="100k" x="35.56" y="60.325"/>
 <element name="2P1" library="alps" package="RK09K113" value="100k" x="35.56" y="75.565"/>
-<element name="H1" library="holes" package="2,8-PAD" value="MOUNT-PAD-ROUND2.8" x="49.8475" y="29.845"/>
+<element name="H1" library="holes" package="2,8-PAD" value="MOUNT-PAD-ROUND2.8" x="48.26" y="29.845"/>
 <element name="H2" library="holes" package="2,8-PAD" value="MOUNT-PAD-ROUND2.8" x="22.86" y="75.565"/>
 <element name="H3" library="holes" package="2,8-PAD" value="MOUNT-PAD-ROUND2.8" x="73.66" y="75.565"/>
 </elements>
