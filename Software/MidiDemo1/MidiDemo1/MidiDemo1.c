@@ -1,5 +1,5 @@
 /**
- * Spielt alle con GemenralMidi definierten Perkussionsklänge via Midi ab
+ * Spielt alle con GenenralMidi definierten Perkussionsklänge via Midi ab
  * und zeigt die gesendeten Noten auf dem LCD-Display an
  */ 
 
