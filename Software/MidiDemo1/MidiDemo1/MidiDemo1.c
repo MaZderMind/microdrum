@@ -11,8 +11,8 @@
 // von meinem Synth verstandenen Instrumente
 // 
 //  http://de.wikipedia.org/wiki/General_Midi
-#define MIDI_NOTE_MIN 35 // Bass Drum 2 
-#define MIDI_NOTE_MAX 59 // Open Triangle
+#define MIDI_NOTE_MIN 35
+#define MIDI_NOTE_MAX 59
 
 // Einstiegspunkt
 int main(void)
