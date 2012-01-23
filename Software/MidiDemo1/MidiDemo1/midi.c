@@ -91,13 +91,13 @@ void midi_noteoff(uint8_t channel, uint8_t note)
  * Gibt einen Pointer auf einen statischen Speicherbereich zurück, der
  * gültig bleibt, bis die Methode erneut aufgerufen wird.
  *
- *  Midi-Note 0  ?  C -1
- *            1  ?  C#-1
- *            2  ?  D -1
+ *  Midi-Note 0  =  C -1
+ *            1  =  C#-1
+ *            2  =  D -1
  *               …
- *          125  ?  F 9
- *          126  ?  F#9
- *          127  ?  G 9
+ *          125  =  F 9
+ *          126  =  F#9
+ *          127  =  G 9
  */
 const char* midi_notename(uint8_t note)
 {
