@@ -1,5 +1,5 @@
 /**
- * Ansteuerung eines MIDI-Gerätes über den UART-Controller
+ * Ansteuerung eines MIDI-Gerï¿½tes ï¿½ber den UART-Controller
  *
  * http://arduino.cc/en/Tutorial/Midi
  * http://www.mikrocontroller.net/articles/UART
@@ -27,14 +27,14 @@ void midi_init()
 	UBRRH = UBRRH_VALUE;
 	UBRRL = UBRRL_VALUE;
 	
-	// wenn nötig, aktivierung des 2X Modus
+	// wenn nï¿½tig, aktivierung des 2X Modus
 	#if USE_2X
 		UCSRA |= (1 << U2X);
 	#else
 		UCSRA &= ~(1 << U2X);
 	#endif
 	
-	// Asynchron 8N1 (8 Datenbits, keine Parität, 1 Stop-Bit)
+	// Asynchron 8N1 (8 Datenbits, keine Paritï¿½t, 1 Stop-Bit)
 	UCSRC = (1<<URSEL) | (1<<UCSZ1) | (1<<UCSZ0);
 	
 	// Das TransmitEnable-Bit im UartControlAndStatusRegisterB setzen
@@ -42,22 +42,22 @@ void midi_init()
 }
 
 /**
- * Midi-Daten über den UART übermitteln
+ * Midi-Daten ï¿½ber den UART ï¿½bermitteln
  */
 void midi_send(uint8_t data)
 {
-	//  warten bis Senden möglich ist
+	//  warten bis Senden mï¿½glich ist
 	while(!(UCSRA & (1<<UDRE)));
 	
 	// Daten senden
-    UDR = data;
+	UDR = data;
 }
 
 /**
  * Ein NoteOn-Kommando senden
  *  channel gibt dabei im Bereich von 0-15 den Midi-Kanal an
  *  note kann von 0-127 eine Note zwischen C -1 und G 9 angeben
- *  velocity gibt die Anschlagsstärke im Bereich von 1-127 an (0 = NoteOff)
+ *  velocity gibt die Anschlagsstï¿½rke im Bereich von 1-127 an (0 = NoteOff)
  */
 void midi_noteon(uint8_t channel, uint8_t note, uint8_t velocity)
 {
@@ -67,7 +67,7 @@ void midi_noteon(uint8_t channel, uint8_t note, uint8_t velocity)
 	// Noten-Wert senden
 	midi_send(note & 0x7F);
 	
-	// Anschlagstärke senden
+	// Anschlagstï¿½rke senden
 	midi_send(velocity & 0x7F);
 }
 
@@ -82,19 +82,19 @@ void midi_noteoff(uint8_t channel, uint8_t note)
 	// Noten-Wert senden
 	midi_send(note & 0x7F);
 	
-	// Anschlagstärke 0 (NoteOff) senden 
+	// Anschlagstï¿½rke 0 (NoteOff) senden 
 	midi_send(0);
 }
 
 /**
  * Den Namen einer Note zusammenbauen
- * Gibt einen Pointer auf einen statischen Speicherbereich zurück, der
- * gültig bleibt, bis die Methode erneut aufgerufen wird.
+ * Gibt einen Pointer auf einen statischen Speicherbereich zurï¿½ck, der
+ * gï¿½ltig bleibt, bis die Methode erneut aufgerufen wird.
  *
  *  Midi-Note 0  ?  C -1
  *            1  ?  C#-1
  *            2  ?  D -1
- *               …
+ *               ï¿½
  *          125  ?  F 9
  *          126  ?  F#9
  *          127  ?  G 9
@@ -102,8 +102,8 @@ void midi_noteoff(uint8_t channel, uint8_t note)
 const char* midi_notename(uint8_t note)
 {
 	// statischer String-Puffer von 6 Bytes
-	//  3 Bytes für den Notennamen (siehe midi.h)
-	//  2 Bytes für die Oktave (-1 bis 9)
+	//  3 Bytes fï¿½r den Notennamen (siehe midi.h)
+	//  2 Bytes fï¿½r die Oktave (-1 bis 9)
 	//  1 Null-Byte (Stringende)
 	static char notename[6] = "";
 	
@@ -120,9 +120,9 @@ const char* midi_notename(uint8_t note)
 	char postfix_str[3] = "";
 	itoa(postfix, postfix_str, 10);
 	
-	// an den Notennamen anhängen
+	// an den Notennamen anhï¿½ngen
 	strcat(notename, postfix_str);
 	
-	// Pointer auf statisches Array zurückgeben
+	// Pointer auf statisches Array zurï¿½ckgeben
 	return notename;
 }
