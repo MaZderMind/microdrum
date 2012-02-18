@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# AvrStudio Solution File, Format Version 11.00
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "tempctl", "tempctl\tempctl.cproj", "{089B24D0-252C-4E2F-8864-461058C7B31D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AVR = Debug|AVR
+		Release|AVR = Release|AVR
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{089B24D0-252C-4E2F-8864-461058C7B31D}.Debug|AVR.ActiveCfg = Debug|AVR
+		{089B24D0-252C-4E2F-8864-461058C7B31D}.Debug|AVR.Build.0 = Debug|AVR
+		{089B24D0-252C-4E2F-8864-461058C7B31D}.Release|AVR.ActiveCfg = Release|AVR
+		{089B24D0-252C-4E2F-8864-461058C7B31D}.Release|AVR.Build.0 = Release|AVR
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
