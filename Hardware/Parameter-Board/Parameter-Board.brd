@@ -64,6 +64,7 @@
 <wire x1="0" y1="80" x2="0" y2="0" width="0" layer="20"/>
 <text x="48.895" y="53.975" size="1.778" layer="16" font="vector" rot="MR270">by MaZderMind</text>
 <text x="50.8" y="37.465" size="1.778" layer="16" font="vector" rot="MR90">Microdrum</text>
+<text x="97.79" y="10.16" size="1.778" layer="16" font="vector" rot="MR0">rev.2</text>
 </plain>
 <libraries>
 <library name="alps">
