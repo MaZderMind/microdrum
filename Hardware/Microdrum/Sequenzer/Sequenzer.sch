@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
 <layer number="16" name="Bottom" color="1" fill="1" visible="no" active="no"/>
@@ -2496,23 +2496,36 @@ Based on the following sources:
 <instance part="TLED7" gate="G$1" x="111.76" y="-22.86" rot="R90"/>
 <instance part="TLED8" gate="G$1" x="129.54" y="-22.86" rot="R90"/>
 <instance part="S1" gate="1" x="7.62" y="-45.72" smashed="yes" rot="MR90">
-<attribute name="VALUE" x="10.795" y="-52.07" size="1.778" layer="96" rot="MR180"/>
 <attribute name="NAME" x="5.715" y="-54.61" size="1.778" layer="95" rot="MR180"/>
 </instance>
 <instance part="S1" gate="D1" x="5.08" y="-33.02" rot="MR90"/>
-<instance part="S2" gate="1" x="25.4" y="-45.72" rot="MR90"/>
+<instance part="S2" gate="1" x="25.4" y="-45.72" smashed="yes" rot="MR90">
+<attribute name="NAME" x="23.495" y="-54.61" size="1.778" layer="95" rot="MR180"/>
+</instance>
 <instance part="S2" gate="D1" x="22.86" y="-33.02" rot="MR90"/>
-<instance part="S3" gate="1" x="43.18" y="-45.72" rot="MR90"/>
+<instance part="S3" gate="1" x="43.18" y="-45.72" smashed="yes" rot="MR90">
+<attribute name="NAME" x="41.275" y="-54.61" size="1.778" layer="95" rot="MR180"/>
+</instance>
 <instance part="S3" gate="D1" x="40.64" y="-33.02" rot="MR90"/>
-<instance part="S4" gate="1" x="60.96" y="-45.72" rot="MR90"/>
+<instance part="S4" gate="1" x="60.96" y="-45.72" smashed="yes" rot="MR90">
+<attribute name="NAME" x="59.055" y="-54.61" size="1.778" layer="95" rot="MR180"/>
+</instance>
 <instance part="S4" gate="D1" x="58.42" y="-33.02" rot="MR90"/>
-<instance part="S5" gate="1" x="78.74" y="-45.72" rot="MR90"/>
+<instance part="S5" gate="1" x="78.74" y="-45.72" smashed="yes" rot="MR90">
+<attribute name="NAME" x="76.835" y="-54.61" size="1.778" layer="95" rot="MR180"/>
+</instance>
 <instance part="S5" gate="D1" x="76.2" y="-33.02" rot="MR90"/>
-<instance part="S6" gate="1" x="96.52" y="-45.72" rot="MR90"/>
+<instance part="S6" gate="1" x="96.52" y="-45.72" smashed="yes" rot="MR90">
+<attribute name="NAME" x="94.615" y="-54.61" size="1.778" layer="95" rot="MR180"/>
+</instance>
 <instance part="S6" gate="D1" x="93.98" y="-33.02" rot="MR90"/>
-<instance part="S7" gate="1" x="114.3" y="-45.72" rot="MR90"/>
+<instance part="S7" gate="1" x="114.3" y="-45.72" smashed="yes" rot="MR90">
+<attribute name="NAME" x="112.395" y="-54.61" size="1.778" layer="95" rot="MR180"/>
+</instance>
 <instance part="S7" gate="D1" x="111.76" y="-33.02" rot="MR90"/>
-<instance part="S8" gate="1" x="132.08" y="-45.72" rot="MR90"/>
+<instance part="S8" gate="1" x="132.08" y="-45.72" smashed="yes" rot="MR90">
+<attribute name="NAME" x="130.175" y="-54.61" size="1.778" layer="95" rot="MR180"/>
+</instance>
 <instance part="S8" gate="D1" x="129.54" y="-33.02" rot="MR90"/>
 <instance part="LED_MX1" gate="A" x="45.72" y="7.62" rot="R270"/>
 <instance part="LED_MX2" gate="A" x="106.68" y="7.62" rot="R270"/>
