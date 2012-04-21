@@ -454,31 +454,90 @@ design rules under a new name.</description>
 </pass>
 </autorouter>
 <elements>
-<element name="SV1" library="con-harting-ml" package="ML10" value="" x="50.165" y="47.625" rot="R180">
+<element name="SV1" library="con-harting-ml" package="ML10" value="" x="50.165" y="47.625" smashed="yes" rot="R180">
 <attribute name="OC_NEWARK" value="unknown" x="26.035" y="93.345" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="MPN" value="" x="26.035" y="93.345" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="MF" value="" x="26.035" y="93.345" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="OC_FARNELL" value="unknown" x="26.035" y="93.345" size="1.778" layer="27" rot="R180" display="off"/>
+<attribute name="NAME" x="52.705" y="54.229" size="1.778" layer="25" ratio="10" rot="R180"/>
+<attribute name="VALUE" x="50.165" y="42.545" size="1.778" layer="27" ratio="10" rot="R180"/>
 </element>
-<element name="TLED1" library="led" package="LED3MM" value="" x="5.715" y="36.83"/>
-<element name="TLED2" library="led" package="LED3MM" value="" x="18.415" y="36.83"/>
-<element name="TLED3" library="led" package="LED3MM" value="" x="31.115" y="36.83"/>
-<element name="TLED4" library="led" package="LED3MM" value="" x="43.815" y="36.83"/>
-<element name="TLED5" library="led" package="LED3MM" value="" x="56.515" y="36.83"/>
-<element name="TLED6" library="led" package="LED3MM" value="" x="69.215" y="36.83"/>
-<element name="TLED7" library="led" package="LED3MM" value="" x="81.915" y="36.83"/>
-<element name="TLED8" library="led" package="LED3MM" value="" x="94.615" y="36.83"/>
-<element name="S1" library="switch-misc" package="SRKL" value="SRKL" x="5.715" y="24.13"/>
-<element name="S2" library="switch-misc" package="SRKL" value="SRKL" x="18.415" y="24.13"/>
-<element name="S3" library="switch-misc" package="SRKL" value="SRKL" x="31.115" y="24.13"/>
-<element name="S4" library="switch-misc" package="SRKL" value="SRKL" x="43.815" y="24.13"/>
-<element name="S5" library="switch-misc" package="SRKL" value="SRKL" x="56.515" y="24.13"/>
-<element name="S6" library="switch-misc" package="SRKL" value="SRKL" x="69.215" y="24.13"/>
-<element name="S7" library="switch-misc" package="SRKL" value="SRKL" x="81.915" y="24.13"/>
-<element name="S8" library="switch-misc" package="SRKL" value="SRKL" x="94.615" y="24.13"/>
-<element name="LED_MX1" library="74xx-eu" package="DIL16" value="74HCT138N" x="24.765" y="46.355" rot="R180"/>
-<element name="LED_MX2" library="74xx-eu" package="DIL16" value="74HCT138N" x="75.565" y="46.355" rot="R180"/>
-<element name="S_MX" library="74xx-eu" package="DIL16" value="74HCT138N" x="51.435" y="7.62"/>
+<element name="TLED1" library="led" package="LED3MM" value="" x="5.715" y="36.83" smashed="yes">
+<attribute name="NAME" x="3.302" y="39.243" size="1.27" layer="25" ratio="10"/>
+<attribute name="VALUE" x="7.62" y="35.179" size="1.27" layer="27" ratio="10"/>
+</element>
+<element name="TLED2" library="led" package="LED3MM" value="" x="18.415" y="36.83" smashed="yes">
+<attribute name="NAME" x="16.002" y="39.243" size="1.27" layer="25" ratio="10"/>
+<attribute name="VALUE" x="20.32" y="35.179" size="1.27" layer="27" ratio="10"/>
+</element>
+<element name="TLED3" library="led" package="LED3MM" value="" x="31.115" y="36.83" smashed="yes">
+<attribute name="NAME" x="28.702" y="39.243" size="1.27" layer="25" ratio="10"/>
+<attribute name="VALUE" x="33.02" y="35.179" size="1.27" layer="27" ratio="10"/>
+</element>
+<element name="TLED4" library="led" package="LED3MM" value="" x="43.815" y="36.83" smashed="yes">
+<attribute name="NAME" x="41.402" y="39.243" size="1.27" layer="25" ratio="10"/>
+<attribute name="VALUE" x="45.72" y="35.179" size="1.27" layer="27" ratio="10"/>
+</element>
+<element name="TLED5" library="led" package="LED3MM" value="" x="56.515" y="36.83" smashed="yes">
+<attribute name="NAME" x="54.229" y="39.243" size="1.27" layer="25" ratio="10"/>
+<attribute name="VALUE" x="58.42" y="35.179" size="1.27" layer="27" ratio="10"/>
+</element>
+<element name="TLED6" library="led" package="LED3MM" value="" x="69.215" y="36.83" smashed="yes">
+<attribute name="NAME" x="66.675" y="39.37" size="1.27" layer="25" ratio="10"/>
+<attribute name="VALUE" x="71.12" y="35.179" size="1.27" layer="27" ratio="10"/>
+</element>
+<element name="TLED7" library="led" package="LED3MM" value="" x="81.915" y="36.83" smashed="yes">
+<attribute name="NAME" x="79.502" y="39.243" size="1.27" layer="25" ratio="10"/>
+<attribute name="VALUE" x="83.82" y="35.179" size="1.27" layer="27" ratio="10"/>
+</element>
+<element name="TLED8" library="led" package="LED3MM" value="" x="94.615" y="36.83" smashed="yes">
+<attribute name="NAME" x="92.202" y="39.243" size="1.27" layer="25" ratio="10"/>
+<attribute name="VALUE" x="96.52" y="35.179" size="1.27" layer="27" ratio="10"/>
+</element>
+<element name="S1" library="switch-misc" package="SRKL" value="SRKL" x="5.715" y="24.13" smashed="yes">
+<attribute name="NAME" x="-0.508" y="33.274" size="1.27" layer="25" ratio="10"/>
+<attribute name="VALUE" x="1.27" y="20.701" size="1.27" layer="27" ratio="10"/>
+</element>
+<element name="S2" library="switch-misc" package="SRKL" value="SRKL" x="18.415" y="24.13" smashed="yes">
+<attribute name="NAME" x="12.192" y="33.274" size="1.27" layer="25" ratio="10"/>
+<attribute name="VALUE" x="13.97" y="20.701" size="1.27" layer="27" ratio="10"/>
+</element>
+<element name="S3" library="switch-misc" package="SRKL" value="SRKL" x="31.115" y="24.13" smashed="yes">
+<attribute name="NAME" x="24.892" y="33.274" size="1.27" layer="25" ratio="10"/>
+<attribute name="VALUE" x="26.67" y="20.701" size="1.27" layer="27" ratio="10"/>
+</element>
+<element name="S4" library="switch-misc" package="SRKL" value="SRKL" x="43.815" y="24.13" smashed="yes">
+<attribute name="NAME" x="37.592" y="33.274" size="1.27" layer="25" ratio="10"/>
+<attribute name="VALUE" x="39.37" y="20.701" size="1.27" layer="27" ratio="10"/>
+</element>
+<element name="S5" library="switch-misc" package="SRKL" value="SRKL" x="56.515" y="24.13" smashed="yes">
+<attribute name="NAME" x="50.292" y="33.274" size="1.27" layer="25" ratio="10"/>
+<attribute name="VALUE" x="52.07" y="20.701" size="1.27" layer="27" ratio="10"/>
+</element>
+<element name="S6" library="switch-misc" package="SRKL" value="SRKL" x="69.215" y="24.13" smashed="yes">
+<attribute name="NAME" x="62.992" y="33.274" size="1.27" layer="25" ratio="10"/>
+<attribute name="VALUE" x="64.77" y="20.701" size="1.27" layer="27" ratio="10"/>
+</element>
+<element name="S7" library="switch-misc" package="SRKL" value="SRKL" x="81.915" y="24.13" smashed="yes">
+<attribute name="NAME" x="75.692" y="33.274" size="1.27" layer="25" ratio="10"/>
+<attribute name="VALUE" x="77.47" y="20.701" size="1.27" layer="27" ratio="10"/>
+</element>
+<element name="S8" library="switch-misc" package="SRKL" value="SRKL" x="94.615" y="24.13" smashed="yes">
+<attribute name="NAME" x="88.392" y="33.274" size="1.27" layer="25" ratio="10"/>
+<attribute name="VALUE" x="90.17" y="20.701" size="1.27" layer="27" ratio="10"/>
+</element>
+<element name="LED_MX1" library="74xx-eu" package="DIL16" value="74HCT138N" x="24.765" y="46.355" smashed="yes" rot="R180">
+<attribute name="NAME" x="20.828" y="45.974" size="1.27" layer="25" ratio="10"/>
+<attribute name="VALUE" x="32.258" y="46.99" size="1.27" layer="27" ratio="10" rot="R180"/>
+</element>
+<element name="LED_MX2" library="74xx-eu" package="DIL16" value="74HCT138N" x="75.565" y="46.355" smashed="yes" rot="R180">
+<attribute name="NAME" x="71.628" y="45.974" size="1.27" layer="25" ratio="10"/>
+<attribute name="VALUE" x="83.058" y="46.99" size="1.27" layer="27" ratio="10" rot="R180"/>
+</element>
+<element name="S_MX" library="74xx-eu" package="DIL16" value="74HCT138N" x="51.435" y="7.62" smashed="yes">
+<attribute name="NAME" x="54.61" y="8.382" size="1.27" layer="25" ratio="10" rot="R180"/>
+<attribute name="VALUE" x="43.942" y="6.985" size="1.27" layer="27" ratio="10"/>
+</element>
 </elements>
 <signals>
 <signal name="GND">
