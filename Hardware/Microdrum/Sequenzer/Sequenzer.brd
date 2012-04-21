@@ -8,16 +8,16 @@
 </settings>
 <grid distance="0.025" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.025" altunitdist="inch" altunit="inch"/>
 <layers>
-<layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
+<layer number="1" name="Top" color="4" fill="1" visible="no" active="yes"/>
 <layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="yes"/>
 <layer number="17" name="Pads" color="2" fill="1" visible="yes" active="yes"/>
 <layer number="18" name="Vias" color="2" fill="1" visible="yes" active="yes"/>
-<layer number="19" name="Unrouted" color="6" fill="1" visible="yes" active="yes"/>
+<layer number="19" name="Unrouted" color="6" fill="1" visible="no" active="yes"/>
 <layer number="20" name="Dimension" color="15" fill="1" visible="yes" active="yes"/>
-<layer number="21" name="tPlace" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="22" name="bPlace" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="23" name="tOrigins" color="15" fill="1" visible="yes" active="yes"/>
-<layer number="24" name="bOrigins" color="15" fill="1" visible="yes" active="yes"/>
+<layer number="21" name="tPlace" color="7" fill="1" visible="no" active="yes"/>
+<layer number="22" name="bPlace" color="7" fill="1" visible="no" active="yes"/>
+<layer number="23" name="tOrigins" color="15" fill="1" visible="no" active="yes"/>
+<layer number="24" name="bOrigins" color="15" fill="1" visible="no" active="yes"/>
 <layer number="25" name="tNames" color="7" fill="1" visible="no" active="yes"/>
 <layer number="26" name="bNames" color="7" fill="1" visible="no" active="yes"/>
 <layer number="27" name="tValues" color="7" fill="1" visible="no" active="yes"/>
@@ -43,8 +43,8 @@
 <layer number="47" name="Measures" color="7" fill="1" visible="no" active="yes"/>
 <layer number="48" name="Document" color="7" fill="1" visible="no" active="yes"/>
 <layer number="49" name="Reference" color="7" fill="1" visible="no" active="yes"/>
-<layer number="51" name="tDocu" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="52" name="bDocu" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="51" name="tDocu" color="7" fill="1" visible="no" active="yes"/>
+<layer number="52" name="bDocu" color="7" fill="1" visible="no" active="yes"/>
 <layer number="91" name="Nets" color="2" fill="1" visible="no" active="no"/>
 <layer number="92" name="Busses" color="1" fill="1" visible="no" active="no"/>
 <layer number="93" name="Pins" color="2" fill="1" visible="no" active="no"/>
@@ -57,9 +57,9 @@
 <board>
 <plain>
 <wire x1="0" y1="0" x2="100" y2="0" width="0" layer="20"/>
-<wire x1="100" y1="0" x2="100.635" y2="59.68" width="0" layer="20"/>
-<wire x1="100.635" y1="59.68" x2="0.635" y2="59.68" width="0" layer="20"/>
-<wire x1="0.635" y1="59.68" x2="0" y2="0" width="0" layer="20"/>
+<wire x1="100" y1="0" x2="100" y2="59.68" width="0" layer="20"/>
+<wire x1="100" y1="59.68" x2="0" y2="59.68" width="0" layer="20"/>
+<wire x1="0" y1="59.68" x2="0" y2="0" width="0" layer="20"/>
 <text x="87.63" y="8.255" size="1.778" layer="16" font="vector" rot="MR0">Microdrum</text>
 <text x="91.44" y="5.08" size="1.778" layer="16" font="vector" rot="MR0">by MaZderMind</text>
 </plain>
@@ -563,7 +563,7 @@ design rules under a new name.</description>
 <contactref element="TLED6" pad="A"/>
 <contactref element="TLED7" pad="A"/>
 <contactref element="TLED8" pad="A"/>
-<polygon width="0.6096" layer="16" isolate="0.4064">
+<polygon width="0.4064" layer="16" isolate="0.4064">
 <vertex x="0" y="0"/>
 <vertex x="100.33" y="0"/>
 <vertex x="100.33" y="59.69"/>
@@ -577,10 +577,6 @@ design rules under a new name.</description>
 <via x="5.08" y="33.655" extent="1-16" drill="0.8" diameter="1.6764" shape="square"/>
 <via x="13.97" y="33.655" extent="1-16" drill="0.8" diameter="1.6764" shape="square"/>
 <wire x1="5.08" y1="33.655" x2="13.97" y2="33.655" width="0.6096" layer="1"/>
-<wire x1="53.975" y1="12.7" x2="53.975" y2="10.16" width="0.6096" layer="16"/>
-<wire x1="75.565" y1="43.815" x2="75.565" y2="41.275" width="0.6096" layer="16"/>
-<wire x1="24.765" y1="43.815" x2="24.765" y2="41.275" width="0.6096" layer="16"/>
-<wire x1="5.715" y1="30.48" x2="5.715" y2="27.94" width="0.6096" layer="16"/>
 </signal>
 <signal name="S_SENSE">
 <contactref element="S8" pad="3"/>
