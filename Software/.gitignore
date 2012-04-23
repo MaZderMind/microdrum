@@ -1,3 +1,8 @@
 *.tmp
 Debug
 Release
+*.o
+*.elf
+*~
+*.hex
+*.lss
