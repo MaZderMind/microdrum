@@ -93,6 +93,11 @@ void lcd_string(const char *data);
  */
 void lcd_pstring(const char *data);
 
+/**
+ * Ausgabe von einer Anzahl Leerzeichen
+ */
+void lcd_space(uint8_t n);
+
 void lcd_int8(int8_t n);
 void lcd_uint8(uint8_t n);
 void lcd_int16(int16_t n);

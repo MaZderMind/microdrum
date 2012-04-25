@@ -233,6 +233,16 @@ void lcd_pstring(const char *pdata)
 	}
 }
 
+
+/**
+ * Ausgabe von einer Anzahl Leerzeichen
+ */
+void lcd_space(uint8_t n)
+{
+	for(; n != 0; n--)
+		lcd_data(' ');
+}
+
 void lcd_int8(int8_t n)
 {
 	// from -127 up to 128
