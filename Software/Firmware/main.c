@@ -29,14 +29,14 @@ main(void)
 	lcd_init();
 	lcd_pstring(PSTR("The Microdrum"));
 	lcd_setcursor(0, 1);
-	
+
 	io_init();
-	
+
 	io_selector_set_pressed_handler(io_selector_pressed);
 	io_selector_set_released_handler(io_selector_released);
 	io_selector_set_left_handler(io_selector_left);
 	io_selector_set_right_handler(io_selector_right);
-	
+
 	io_loop();
 	return 0;
 }
@@ -62,7 +62,7 @@ uint8_t instrument_counter = 0;
 void print_instrument(void)
 {
 	uint8_t instrument = (instrument_counter>>1) % 8;
-	
+
 	lcd_setcursor(0, 1);
 	lcd_uint8(instrument + 1);
 	lcd_pstring(PSTR("/8 "));

@@ -228,4 +228,8 @@ depend:
 		>> $(MAKEFILE); \
 	$(CC) -M -mmcu=$(MCU) $(CDEFS) $(CINCS) $(SRC) $(ASRC) >> $(MAKEFILE)
 
-.PHONY:	all build elf hex eep lss sym program coff extcoff clean depend size
+spaces:
+	sed -i 's/[ \t]*$$//g' *.c *.h
+
+
+.PHONY:	all build elf hex eep lss sym program coff extcoff clean depend size spaces
