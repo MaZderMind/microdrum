@@ -1,14 +1,18 @@
 #ifndef IO_H_
 #define IO_H_
 
-#include <avr/pgmspace.h>
+#define MUX_PORT      PORTD
+#define MUX_DDR       DDRD
 
-#define N_PARAMETERS 16
+// Mux-Pins PD0-PD3
+#define MUX_PIN      PD0
 
-extern uint8_t parameter[N_PARAMETERS];
+// die Mux-Pins müssen hintereinander liegen
+#define MUX_PIN0      PD0
+#define MUX_PIN1      PD1
+#define MUX_PIN2      PD2
 
-void io_init();
-uint8_t io_read_parameter(uint8_t chain);
-void io_cycle();
+void io_init(void);
+void io_loop(void);
 
 #endif /* IO_H_ */

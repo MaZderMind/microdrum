@@ -93,6 +93,13 @@ void lcd_string(const char *data);
  */
 void lcd_pstring(const char *data);
 
+void lcd_int8(int8_t n);
+void lcd_uint8(uint8_t n);
+void lcd_int16(int16_t n);
+void lcd_uint16(uint16_t n);
+void lcd_int32(int32_t n);
+void lcd_uint32(uint32_t n);
+
 /**
  * Definition eines benutzerdefinierten Sonderzeichens.
  *

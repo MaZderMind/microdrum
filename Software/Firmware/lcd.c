@@ -8,6 +8,7 @@
  * Die Pinbelegung ist über defines in lcd.h einstellbar
  */
 
+#include <stdlib.h>
 #include <avr/io.h>
 #include <util/delay.h>
 #include <avr/pgmspace.h>
@@ -230,6 +231,54 @@ void lcd_pstring(const char *pdata)
 	{
 		lcd_data(c);
 	}
+}
+
+void lcd_int8(int8_t n)
+{
+	// from -127 up to 128
+	char s[5];
+	itoa(n, s, 10);
+	lcd_string(s);
+}
+
+void lcd_uint8(uint8_t n)
+{
+	// from 0 up to 255
+	char s[4];
+	utoa(n, s, 10);
+	lcd_string(s);
+}
+
+void lcd_int16(int16_t n)
+{
+	// from -32768 up to 32767
+	char s[7];
+	itoa(n, s, 10);
+	lcd_string(s);
+}
+
+void lcd_uint16(uint16_t n)
+{
+	// from 0 up to 65535
+	char s[6];
+	utoa(n, s, 10);
+	lcd_string(s);
+}
+
+void lcd_int32(int32_t n)
+{
+	// from -2147483648 up to 2147483647
+	char s[12];
+	ltoa(n, s, 10);
+	lcd_string(s);
+}
+
+void lcd_uint32(uint32_t n)
+{
+	// from 0 up to 4294967295
+	char s[11];
+	ultoa(n, s, 10);
+	lcd_string(s);
 }
 
 /**
