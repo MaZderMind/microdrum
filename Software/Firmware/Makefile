@@ -36,8 +36,8 @@ CINCS =
 
 CDEBUG = -g$(DEBUG)
 CWARN = -Wall -Wstrict-prototypes
-CTUNING = -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -finline-limit=3 -fno-inline-small-functions -fno-tree-scev-cprop
-LDTUNING = -Wl,--gc-sections,--relax
+CTUNING = -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -finline-limit=3 -fno-inline-small-functions -fno-tree-scev-cprop -fno-split-wide-types -fno-jump-tables 
+LDTUNING = -Wl,--gc-sections,--relax,--print-gc-sections
 #CEXTRA = -Wa,-adhlns=$(<:.c=.lst)
 CFLAGS = $(CTUNING) $(CDEBUG) $(CDEFS) $(CINCS) -O$(OPT) $(CWARN) $(CSTANDARD) $(CEXTRA)
 
@@ -143,7 +143,7 @@ sym: $(TARGET).sym
 
 
 # Program the device.  
-program: $(TARGET).hex
+program: build
 	$(AVRDUDE) $(AVRDUDE_FLAGS) $(AVRDUDE_WRITE_FLASH)
 
 program-eep: $(TARGET).eep
@@ -151,7 +151,7 @@ program-eep: $(TARGET).eep
 
 
 # Print the devices space usage
-size:  $(TARGET).elf
+size: $(TARGET).elf
 	$(AVRSIZE) --mcu=$(MCU) --format=avr $(TARGET).elf
 
 
