@@ -1,11 +1,11 @@
-#ifndefIO_PARAMETER_H_
-#defineIO_PARAMETER_H_
+#ifndef IO_PARAMETER_H_
+#define IO_PARAMETER_H_
 
-#defineN_PARAMETERS16
+#define N_PARAMETERS 16
 
-externuint8_tparameter[N_PARAMETERS];
+extern uint8_t parameter[N_PARAMETERS];
 
-voidio_parameter_init();
-voidio_parameter_sync(uint8_tcycle);
+void io_parameter_init(void);
+void io_parameter_sync(uint8_t cycle);
 
-#endif/*IO_PARAMETER_H_*/
+#endif /*IO_PARAMETER_H_*/
