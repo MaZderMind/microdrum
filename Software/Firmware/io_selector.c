@@ -8,13 +8,12 @@ io_selector_left_handler left_callback;
 io_selector_right_handler right_callback;
 
 struct {
-	// zweites byte
-	unsigned pressed:4;
-
 	// erstes byte
-	unsigned left:1;
-	unsigned right:1;
+	unsigned left:2;
+	unsigned right:2;
 
+	// zweites byte
+	unsigned pressed:3;
 } io_selector_state;
 
 void io_selector_init(void)
@@ -41,14 +40,14 @@ void io_selector_detect_press(void)
 	// wenn der button noch gedrückt ist
 	if(pinvalue)
 	{
-		// intervall-counter bis 8 hoch zählen
-		if(io_selector_state.pressed < 8)
+		// intervall-counter bis 7 hoch zählen
+		if(io_selector_state.pressed < 7)
 		{
 			io_selector_state.pressed++;
 		}
 
-		// wenn der intervall-counter == 7 ist
-		if(io_selector_state.pressed == 7)
+		// wenn der intervall-counter == 6 ist
+		if(io_selector_state.pressed == 6)
 		{
 			// die callback-routine anspringen
 			if(pressed_callback) pressed_callback();
@@ -60,9 +59,9 @@ void io_selector_detect_press(void)
 	// wenn der button los gelassen ist
 	else
 	{
-		// wenn der intervall-counter 7 erreicht hatte,
+		// wenn der intervall-counter 6 erreicht hatte,
 		// bevor der button wieder los gelassen wurde
-		if(io_selector_state.pressed >= 7)
+		if(io_selector_state.pressed >= 6)
 		{
 				// die callback-routine rufen
 			if(released_callback) released_callback();
@@ -76,22 +75,44 @@ void io_selector_detect_press(void)
 void io_selector_detect_rotation(void)
 {
 	uint8_t
-		left = !(SELECTOR_PIN & (1<<SELECTOR_PIN_LEFT)),
-		right = !(SELECTOR_PIN & (1<<SELECTOR_PIN_RIGHT));
+		left = (SELECTOR_PIN & (1<<SELECTOR_PIN_LEFT)),
+		right = (SELECTOR_PIN & (1<<SELECTOR_PIN_RIGHT));
 
-	if(left && !io_selector_state.left && !right)
+	if(left)
 	{
-		// der Like kanal ging von low auf high während der rechte noch low ist
-		if(left_callback) left_callback();
+		if(io_selector_state.left < 3)
+		{
+			io_selector_state.left++;
+		}
+	}
+	else
+	{
+		io_selector_state.left = 0;
 	}
 
-	else if(right && !io_selector_state.right && !left)
+	if(right)
 	{
+		if(io_selector_state.right < 3)
+		{
+			io_selector_state.right++;
+		}
+	}
+	else
+	{
+		io_selector_state.right = 0;
+	}
+
+	if(io_selector_state.left == 2 && !right)
+	{
+		// der Like kanal ging von low auf high während der rechte noch low ist
 		if(right_callback) right_callback();
 	}
 
-	io_selector_state.left = left;
-	io_selector_state.right = right;
+
+	else if(io_selector_state.right == 2 && !left)
+	{
+		if(left_callback) left_callback();
+	}
 }
 
 void io_selector_detect(void)

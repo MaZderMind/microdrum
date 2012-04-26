@@ -29,6 +29,7 @@ main(void)
 	lcd_init();
 	lcd_pstring(PSTR("The Microdrum"));
 	lcd_setcursor(0, 1);
+	print_instrument();
 
 	io_init();
 
@@ -45,15 +46,13 @@ main(void)
 void io_selector_pressed(void)
 {
 	lcd_setcursor(0, 2);
-	lcd_pstring(PSTR("pressed     "));
-	//lcd_data('.');
+	lcd_pstring(PSTR("pressed"));
 }
 
 void io_selector_released(void)
 {
 	lcd_setcursor(0, 2);
-	lcd_pstring(PSTR("released    "));
-	//lcd_data('#');
+	lcd_space(7);
 }
 
 
@@ -61,7 +60,7 @@ uint8_t instrument_counter = 0;
 
 void print_instrument(void)
 {
-	uint8_t instrument = (instrument_counter>>1) % 8;
+	uint8_t instrument = instrument_counter % 8;
 
 	lcd_setcursor(0, 1);
 	lcd_uint8(instrument + 1);
@@ -72,12 +71,12 @@ void print_instrument(void)
 
 void io_selector_left(void)
 {
-	instrument_counter++;
+	instrument_counter--;
 	print_instrument();
 }
 
 void io_selector_right(void)
 {
-	instrument_counter--;
+	instrument_counter++;
 	print_instrument();
 }
