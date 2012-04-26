@@ -69,7 +69,7 @@ uint8_t io_parameter_read(uint8_t chain)
 		// Wert lesen und addieren
 		temp+=ADCW;
 	}
-	  
+
 	// die Summe durch die Anzahl teilen und auf 8 Bit reduzieren
 	return (temp / n) >> 2;
 }

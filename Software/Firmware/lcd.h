@@ -5,7 +5,7 @@
  * http://www.mikrocontroller.net/articles/AVR-GCC-Tutorial/LCD-Ansteuerung
  * http://www.reichelt.de/?ARTICLE=31652
  */
- 
+
 #ifndef LCD_H_
 #define LCD_H_
 
@@ -23,13 +23,13 @@
 
 // LCD-Datenpins DB4-DB7 and ATmega Pins PB0-PB3
 #define LCD_DB        PB0
- 
+
 // LCD-Register-Select-Pin RS an ATmega Pin PB4
 #define LCD_RS        PB4
- 
+
 // LCD-Enable-Pin EN an ATmega Pin PB5
 #define LCD_EN        PB5
- 
+
 /**
  * LCD Ausführungszeiten (MS=Millisekunden, US=Mikrosekunden)
  */
@@ -38,26 +38,26 @@
 #define LCD_ENABLE_US           20
 #define LCD_WRITEDATA_US        46
 #define LCD_COMMAND_US          42
- 
+
 #define LCD_SOFT_RESET_MS1      5
 #define LCD_SOFT_RESET_MS2      1
 #define LCD_SOFT_RESET_MS3      1
 #define LCD_SET_4BITMODE_MS     5
- 
+
 #define LCD_CLEAR_DISPLAY_MS    2
 #define LCD_CURSOR_HOME_MS      2
- 
+
 /**
  * Zeilendefinitionen des verwendeten LCD
  * Die Einträge hier sollten für LCDs mit Zeilenlängen von 16-20 Zeichen passen
  * Bei anderen Zeilenlängen müssen diese Einträge angepasst werden
  */
- 
+
 #define LCD_DDADR_LINE1         0x00
 #define LCD_DDADR_LINE2         0x40
 #define LCD_DDADR_LINE3         0x14
 #define LCD_DDADR_LINE4         0x54
- 
+
 /**
  * Initialisierungs-Sequenz des LCD-Displays
  */
@@ -180,7 +180,7 @@ void lcd_command(uint8_t data);
 #define LCD_FUNCTION_5X10       0x04
 
 #define LCD_SOFT_RESET          0x30
- 
+
 /**
  * Set CG RAM Address --------- 0b01xxxxxx  (Character Generator RAM)
  */

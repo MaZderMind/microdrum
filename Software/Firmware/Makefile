@@ -229,6 +229,7 @@ depend:
 	$(CC) -M -mmcu=$(MCU) $(CDEFS) $(CINCS) $(SRC) $(ASRC) >> $(MAKEFILE)
 
 spaces:
+	dos2unix *.c *.h
 	sed -i 's/[ \t]*$$//g' *.c *.h
 
 
