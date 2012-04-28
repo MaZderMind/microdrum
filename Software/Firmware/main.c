@@ -4,6 +4,7 @@
 #include "lcd.h"
 #include "io.h"
 #include "io_selector.h"
+#include "midi.h"
 
 // Forwärts-Deklaration der Event-Handler
 void io_selector_pressed(void);
@@ -11,17 +12,19 @@ void io_selector_released(void);
 void io_selector_left(void);
 void io_selector_right(void);
 
-// Instrumentennamen
-prog_char name0[] PROGMEM = "Bassdrum";
-prog_char name1[] PROGMEM = "Snare Drum";
-prog_char name2[] PROGMEM = "Conga";
-prog_char name3[] PROGMEM = "Rimshot";
-prog_char name4[] PROGMEM = "Hand Clap";
-prog_char name5[] PROGMEM = "Maracas";
-prog_char name6[] PROGMEM = "Cowbell";
-prog_char name7[] PROGMEM = "Hi-Hat";
-PROGMEM prog_char *names[] = {name0, name1, name2, name3, name4, name5, name6, name7};
+void print_instrument(void);
+void midi_clock(void);
 
+// Instrumentennamen
+prog_char name0[] PROGMEM = "Alpha";
+prog_char name1[] PROGMEM = "Beta";
+prog_char name2[] PROGMEM = "Gamma";
+prog_char name3[] PROGMEM = "Delta";
+prog_char name4[] PROGMEM = "Epsilon";
+prog_char name5[] PROGMEM = "Zeta";
+prog_char name6[] PROGMEM = "Eta";
+prog_char name7[] PROGMEM = "Theta";
+PROGMEM prog_char *names[] = {name0, name1, name2, name3, name4, name5, name6, name7};
 
 int __attribute__((OS_main))
 main(void)
@@ -38,10 +41,31 @@ main(void)
 	io_selector_set_left_handler(io_selector_left);
 	io_selector_set_right_handler(io_selector_right);
 
-	io_loop();
+	midi_init();
+	midi_set_clock_interrupt(midi_clock, 1);
+
+	for(;;)
+	{
+		io_sync();
+	}
+
 	return 0;
 }
 
+
+
+volatile uint8_t instrument_counter = 0;
+
+void print_instrument(void)
+{
+	uint8_t instrument = instrument_counter % 8;
+
+	lcd_setcursor(0, 1);
+	lcd_uint8(instrument + 1);
+	lcd_pstring(PSTR("/8 "));
+	lcd_pstring((char*)pgm_read_word(&(names[instrument])));
+	lcd_space(5);
+}
 
 void io_selector_pressed(void)
 {
@@ -55,20 +79,6 @@ void io_selector_released(void)
 	lcd_space(7);
 }
 
-
-uint8_t instrument_counter = 0;
-
-void print_instrument(void)
-{
-	uint8_t instrument = instrument_counter % 8;
-
-	lcd_setcursor(0, 1);
-	lcd_uint8(instrument + 1);
-	lcd_pstring(PSTR("/8 "));
-	lcd_pstring((char*)pgm_read_word(&(names[instrument])));
-	lcd_space(5);
-}
-
 void io_selector_left(void)
 {
 	instrument_counter--;
@@ -79,4 +89,12 @@ void io_selector_right(void)
 {
 	instrument_counter++;
 	print_instrument();
+}
+
+
+
+void midi_clock(void)
+{
+	midi_noteon(0, instrument_counter+35, 70);
+	midi_noteoff(0, instrument_counter+35);
 }

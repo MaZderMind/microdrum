@@ -8,7 +8,7 @@
 MCU = atmega16
 FORMAT = ihex
 TARGET = main
-SRC = $(TARGET).c lcd.c io.c io_selector.c
+SRC = $(TARGET).c lcd.c io.c io_selector.c midi.c
 ASRC = 
 OPT = s
 
@@ -28,7 +28,7 @@ DEBUG = stabs
 CSTANDARD = -std=gnu99
 
 # Place -D or -U options here
-CDEFS = -DF_CPU=1000000
+CDEFS = -DF_CPU=4000000
 
 # Place -I options here
 CINCS =

@@ -29,7 +29,7 @@ volatile uint8_t clock_callback_prescale_cnt;
 /**
  * Die Midi-Kommunikation initialisieren
  */
-void midi_init()
+void midi_init(void)
 {
 	// BAUD-Konstante auf den Wert von MIDI_BAUD setzen
 	#undef BAUD
@@ -179,17 +179,19 @@ ISR(USART_RXC_vect)
 	switch(command)
 	{
 		case MIDI_CMD_CLOCK:
+			clock_callback();
+
 			// ohne Callback kann das Clock-Signal ignoriert werden
-			if(!clock_callback)
-				return;
+			//if(!clock_callback)
+			//	return;
 
 			// Wenn der Prescaler-Counter = 0 steht, die Callback-Routine anspringen
-			if(clock_callback_prescale_cnt == 0)
-				clock_callback();
+			//if(clock_callback_prescale_cnt == 0)
+			//	clock_callback();
 
 			// Wenn der Prescaler-Counter über den definierten bereich hinaus geht,
 			// zurück auf 0 fahren
-			if(clock_callback_prescale_cnt++ == clock_callback_prescale)
-				clock_callback_prescale_cnt = 0;
+			//if(clock_callback_prescale_cnt++ == clock_callback_prescale)
+			//	clock_callback_prescale_cnt = 0;
 	}
 }

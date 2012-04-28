@@ -43,12 +43,3 @@ void io_sync(void)
 		//io_parameter_sync(cycle);
 	}
 }
-
-void io_loop(void)
-{
-	for(;;)
-	{
-		io_sync();
-		// TODO: leave loop into menu loop with return possibility
-	}
-}

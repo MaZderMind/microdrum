@@ -29,7 +29,7 @@ static const char* const midi_notenames[] = {"C ", "C#", "D ", "D#", "E ", "F ",
 /**
  * Die Midi-Kommunikation initialisieren
  */
-void midi_init();
+void midi_init(void);
 
 /**
  * Definition einer Clock-Interrupt-Callback-Routine
