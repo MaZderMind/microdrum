@@ -16,10 +16,15 @@
 /**
  * Midi Clock-Commands
  */
-#define MIDI_CMD_START 0xFA
-#define MIDI_CMD_STOP 0xFC
-#define MIDI_CMD_CLOCK 0xF8
-#define MIDI_CMD_CONTINUE 0xFB
+#define MIDI_START 0xFA
+#define MIDI_STOP 0xFC
+#define MIDI_CLOCK 0xF8
+#define MIDI_CONTINUE 0xFB
+
+#define MIDI_SONG_POSITION_POINTER 0xFB
+
+#define MIDI_NOTEON 0x90
+#define MIDI_NOTEOFF 0x80
 
 /**
  * Benennung der 12 Noten

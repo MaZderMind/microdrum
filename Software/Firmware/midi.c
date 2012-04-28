@@ -102,7 +102,7 @@ void midi_send(uint8_t data)
 void midi_noteon(uint8_t channel, uint8_t note, uint8_t velocity)
 {
 	// Midi-Kanal senden
-	midi_send((channel & 0x0F) | 0x90);
+	midi_send((channel & 0x0F) | MIDI_NOTEON);
 
 	// Noten-Wert senden
 	midi_send(note & 0x7F);
@@ -117,7 +117,7 @@ void midi_noteon(uint8_t channel, uint8_t note, uint8_t velocity)
 void midi_noteoff(uint8_t channel, uint8_t note)
 {
 	// Midi-Kanal senden
-	midi_send((channel & 0x0F) | 0x90);
+	midi_send((channel & 0x0F) | MIDI_NOTEON);
 
 	// Noten-Wert senden
 	midi_send(note & 0x7F);
@@ -167,31 +167,77 @@ const char* midi_notename(uint8_t note)
 	return notename;
 }
 
+uint16_t midi_combine_bytes(uint8_t first, uint8_t second)
+{
+	uint16_t _14bit;
+
+	_14bit = (uint16_t)second;
+	_14bit <<= 7;
+	_14bit |= (uint16_t)first;
+
+	return _14bit;
+}
+
+
+uint8_t last_command = 0, bytes_required = 0, data_bytes[4] = {};
+
 /**
  * UART Empfangs-Interrupt
  */
 ISR(USART_RXC_vect)
 {
 	// anliegendes Kommando aus dem Puffer lesen
-	uint8_t command = UDR;
+	uint8_t input = UDR;
 
-	// Auswerten
-	switch(command)
+	// Dies ist ein Datenbyte eines bereits erhalten Befehls
+	if(last_command)
 	{
-		case MIDI_CMD_CLOCK:
-			clock_callback();
 
+		data_bytes[bytes_required--] = input;
+
+
+		// alle Datenbytes wurden empfangen
+		if(bytes_required == 0)
+		{
+			switch(last_command)
+			{
+				case MIDI_SONG_POSITION_POINTER: {
+					// assemble 14 bit value
+					uint16_t position = midi_combine_bytes(data_bytes[1], data_bytes[0]);
+					clock_callback_prescale_cnt = position * 6;
+				}
+			}
+		}
+
+		return;
+	}
+
+	// Befehl auswerten
+	switch(input)
+	{
+		case MIDI_CLOCK: {
 			// ohne Callback kann das Clock-Signal ignoriert werden
-			//if(!clock_callback)
-			//	return;
+			if(!clock_callback)
+				return;
 
-			// Wenn der Prescaler-Counter = 0 steht, die Callback-Routine anspringen
-			//if(clock_callback_prescale_cnt == 0)
-			//	clock_callback();
+			if(++clock_callback_prescale_cnt % clock_callback_prescale == 0)
+			{
+				clock_callback_prescale_cnt = 0;
+				clock_callback();
+			}
 
-			// Wenn der Prescaler-Counter über den definierten bereich hinaus geht,
-			// zurück auf 0 fahren
-			//if(clock_callback_prescale_cnt++ == clock_callback_prescale)
-			//	clock_callback_prescale_cnt = 0;
+			break;
+		}
+
+		case MIDI_SONG_POSITION_POINTER: {
+			last_command = MIDI_SONG_POSITION_POINTER;
+			bytes_required = 1; // 2 Bytes
+		}
+
+		case MIDI_START: {
+			clock_callback_prescale_cnt = 0;
+			break;
+		}
 	}
 }
+

@@ -42,7 +42,7 @@ main(void)
 	io_selector_set_right_handler(io_selector_right);
 
 	midi_init();
-	midi_set_clock_interrupt(midi_clock, 1);
+	midi_set_clock_interrupt(midi_clock, 6);
 
 	for(;;)
 	{
@@ -90,7 +90,6 @@ void io_selector_right(void)
 	instrument_counter++;
 	print_instrument();
 }
-
 
 
 void midi_clock(void)
