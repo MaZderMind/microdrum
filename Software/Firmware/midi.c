@@ -9,6 +9,7 @@
 #include <string.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
+
 #include "midi.h"
 
 /**
@@ -20,6 +21,11 @@ volatile midi_clock_interrupt clock_callback;
  * gespeicherter Clock-Prescaler
  */
 volatile uint8_t clock_callback_prescale;
+
+/**
+ * Clock-Counter-Reset, abgeletitet von der gewünschten Beats-Zahl
+ */
+volatile uint8_t clock_callback_prescale_reset;
 
 /**
  * Zähler der interupt-routine
@@ -65,7 +71,7 @@ void midi_init(void)
 /**
  * Die Clock-Interrupt-Callback-Routine setzen
  */
-void midi_set_clock_interrupt(midi_clock_interrupt cb, uint8_t prescale)
+void midi_set_clock_interrupt(midi_clock_interrupt cb, uint8_t prescale, uint8_t beats)
 {
 	// Das ReceiveCompleteInterruptEnable im UartControlAndStatusRegisterB setzen
 	UCSRB |= (1<<RXCIE);
@@ -76,9 +82,11 @@ void midi_set_clock_interrupt(midi_clock_interrupt cb, uint8_t prescale)
 	// Den callback speichern
 	clock_callback = cb;
 
-	// Den Prescaler speichern, wenn er >0 ist
-	if(prescale > 0)
-		clock_callback_prescale = prescale;
+	// Den Prescaler speichern
+	clock_callback_prescale = prescale;
+
+	// Die Beats-Zahl speichern
+	clock_callback_prescale_reset = prescale * beats;
 }
 
 /**
@@ -117,14 +125,27 @@ void midi_noteon(uint8_t channel, uint8_t note, uint8_t velocity)
 void midi_noteoff(uint8_t channel, uint8_t note)
 {
 	// Midi-Kanal senden
-	midi_send((channel & 0x0F) | MIDI_NOTEON);
+	midi_send((channel & 0x0F) | MIDI_NOTEOFF);
 
 	// Noten-Wert senden
 	midi_send(note & 0x7F);
 
-	// Anschlagstärke 0 (NoteOff) senden
+	// Anschlagstärke 0 senden
 	midi_send(0);
 }
+
+void midi_cc(uint8_t channel, uint8_t controller, uint8_t value)
+{
+	// Midi-Kanal senden
+	midi_send((channel & 0x0F) | MIDI_CC);
+
+	// Controller-Nummer
+	midi_send(controller & 0x7F);
+
+	// Controller-Wert
+	midi_send(value & 0x7F);
+}
+
 
 /**
  * Den Namen einer Note zusammenbauen
@@ -167,20 +188,6 @@ const char* midi_notename(uint8_t note)
 	return notename;
 }
 
-uint16_t midi_combine_bytes(uint8_t first, uint8_t second)
-{
-	uint16_t _14bit;
-
-	_14bit = (uint16_t)second;
-	_14bit <<= 7;
-	_14bit |= (uint16_t)first;
-
-	return _14bit;
-}
-
-
-uint8_t last_command = 0, bytes_required = 0, data_bytes[4] = {};
-
 /**
  * UART Empfangs-Interrupt
  */
@@ -189,49 +196,26 @@ ISR(USART_RXC_vect)
 	// anliegendes Kommando aus dem Puffer lesen
 	uint8_t input = UDR;
 
-	// Dies ist ein Datenbyte eines bereits erhalten Befehls
-	if(last_command)
-	{
-
-		data_bytes[bytes_required--] = input;
-
-
-		// alle Datenbytes wurden empfangen
-		if(bytes_required == 0)
-		{
-			switch(last_command)
-			{
-				case MIDI_SONG_POSITION_POINTER: {
-					// assemble 14 bit value
-					uint16_t position = midi_combine_bytes(data_bytes[1], data_bytes[0]);
-					clock_callback_prescale_cnt = position * 6;
-				}
-			}
-		}
-
-		return;
-	}
-
 	// Befehl auswerten
 	switch(input)
 	{
 		case MIDI_CLOCK: {
 			// ohne Callback kann das Clock-Signal ignoriert werden
-			if(!clock_callback)
-				return;
 
 			if(++clock_callback_prescale_cnt % clock_callback_prescale == 0)
 			{
+				if(clock_callback)
+				{
+					clock_callback(clock_callback_prescale_cnt / clock_callback_prescale - 1);
+				}
+			}
+
+			if(clock_callback_prescale_cnt == clock_callback_prescale_reset)
+			{
 				clock_callback_prescale_cnt = 0;
-				clock_callback();
 			}
 
 			break;
-		}
-
-		case MIDI_SONG_POSITION_POINTER: {
-			last_command = MIDI_SONG_POSITION_POINTER;
-			bytes_required = 1; // 2 Bytes
 		}
 
 		case MIDI_START: {

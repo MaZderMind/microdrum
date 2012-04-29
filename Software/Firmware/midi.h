@@ -25,6 +25,7 @@
 
 #define MIDI_NOTEON 0x90
 #define MIDI_NOTEOFF 0x80
+#define MIDI_CC 0xB0
 
 /**
  * Benennung der 12 Noten
@@ -39,12 +40,12 @@ void midi_init(void);
 /**
  * Definition einer Clock-Interrupt-Callback-Routine
  */
-typedef void (*midi_clock_interrupt)(void);
+typedef void (*midi_clock_interrupt)(uint8_t beat);
 
 /**
  * Die Clock-Interrupt-Callback-Routine setzen
  */
-void midi_set_clock_interrupt(midi_clock_interrupt cb, uint8_t prescale);
+void midi_set_clock_interrupt(midi_clock_interrupt cb, uint8_t prescale, uint8_t beats);
 
 /**
  * Ein NoteOn-Kommando senden

@@ -1,10 +1,11 @@
-#include <avr/io.h>
 #include <avr/pgmspace.h>
+#include <util/delay.h>
 
 #include "lcd.h"
 #include "io.h"
 #include "io_selector.h"
 #include "midi.h"
+#include "instrument_names.h"
 
 // Forwärts-Deklaration der Event-Handler
 void io_selector_pressed(void);
@@ -13,18 +14,7 @@ void io_selector_left(void);
 void io_selector_right(void);
 
 void print_instrument(void);
-void midi_clock(void);
-
-// Instrumentennamen
-prog_char name0[] PROGMEM = "Alpha";
-prog_char name1[] PROGMEM = "Beta";
-prog_char name2[] PROGMEM = "Gamma";
-prog_char name3[] PROGMEM = "Delta";
-prog_char name4[] PROGMEM = "Epsilon";
-prog_char name5[] PROGMEM = "Zeta";
-prog_char name6[] PROGMEM = "Eta";
-prog_char name7[] PROGMEM = "Theta";
-PROGMEM prog_char *names[] = {name0, name1, name2, name3, name4, name5, name6, name7};
+void midi_clock(uint8_t);
 
 int __attribute__((OS_main))
 main(void)
@@ -42,7 +32,12 @@ main(void)
 	io_selector_set_right_handler(io_selector_right);
 
 	midi_init();
-	midi_set_clock_interrupt(midi_clock, 6);
+
+	// den Midi-Clock Callback definieren, alle 6 Midi-Clocks aufrufen,
+	//   dabei 8 Beats (von 0 bis 7 durchzählen)
+	//   Würde das Beats-Zählen mit einer lokalen Variable gemacht, gäbe es Probleme
+	//   beim Clock-Reset (neu Aufsetzen nach Pause oder Spulen)
+	midi_set_clock_interrupt(midi_clock, 6 , 8);
 
 	for(;;)
 	{
@@ -54,7 +49,7 @@ main(void)
 
 
 
-volatile uint8_t instrument_counter = 0;
+volatile uint8_t instrument_counter = 0, instrument_accent = 0;
 
 void print_instrument(void)
 {
@@ -69,12 +64,14 @@ void print_instrument(void)
 
 void io_selector_pressed(void)
 {
+	instrument_accent = 1;
 	lcd_setcursor(0, 2);
 	lcd_pstring(PSTR("pressed"));
 }
 
 void io_selector_released(void)
 {
+	instrument_accent = 0;
 	lcd_setcursor(0, 2);
 	lcd_space(7);
 }
@@ -92,8 +89,68 @@ void io_selector_right(void)
 }
 
 
-void midi_clock(void)
+
+void midi_clock(uint8_t beat)
 {
-	midi_noteon(0, instrument_counter+35, 70);
-	midi_noteoff(0, instrument_counter+35);
+	switch(beat)
+	{
+		case 0: {
+			break;
+		}
+
+		case 1: {
+			midi_noteon(0, 36, 70);
+
+			_delay_ms(1);
+
+			midi_noteoff(0, 36);
+			break;
+		}
+
+		case 2: {
+			break;
+		}
+
+		case 3: {
+			midi_noteon(0, 42, 70);
+
+			_delay_ms(1);
+
+			midi_noteoff(0, 42);
+			break;
+		}
+
+		case 4: {
+			break;
+		}
+
+		case 5: {
+			midi_noteon(0, 38, 70);
+			midi_noteon(0, 45, 70);
+			midi_noteon(0, 42, 70);
+			if(instrument_accent) midi_noteon(0, 49, 70);
+
+			_delay_ms(1);
+
+			midi_noteoff(0, 38);
+			midi_noteoff(0, 45);
+			midi_noteoff(0, 42);
+			if(instrument_accent) midi_noteoff(0, 49);
+
+			break;
+		}
+
+		case 6: {
+			break;
+		}
+
+		case 7: {
+			midi_noteon(0, 42, 70);
+
+			_delay_ms(1);
+
+			midi_noteoff(0, 42);
+			break;
+		}
+	}
 }
