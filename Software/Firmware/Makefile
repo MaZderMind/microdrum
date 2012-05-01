@@ -131,7 +131,7 @@ ALL_ASFLAGS = -mmcu=$(MCU) -I. -x assembler-with-cpp $(ASFLAGS)
 
 
 # Default target.
-all: build
+all: build doc
 
 build: elf lss hex size
 
@@ -232,5 +232,7 @@ spaces:
 	dos2unix *.c *.h
 	sed -i 's/[ \t]*$$//g' *.c *.h
 
+doc:
+	doxygen >/dev/null
 
 .PHONY:	all build elf hex eep lss sym program coff extcoff clean depend size spaces
