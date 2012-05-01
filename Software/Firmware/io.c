@@ -31,7 +31,7 @@ void io_select(uint8_t channel)
 
 void io_sync(void)
 {
-	// Tastendrücke und Rad-drehung detektieren
+	// TastendrÃ¼cke und Rad-drehung detektieren
 	io_selector_detect();
 
 	for(uint8_t cycle = 0; cycle < 8; cycle++)

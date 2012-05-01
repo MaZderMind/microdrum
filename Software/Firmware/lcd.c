@@ -5,7 +5,7 @@
  * http://www.mikrocontroller.net/articles/AVR-GCC-Tutorial/LCD-Ansteuerung
  * http://www.reichelt.de/?ARTICLE=31652
  *
- * Die Pinbelegung ist über defines in lcd.h einstellbar
+ * Die Pinbelegung ist Ã¼ber defines in lcd.h einstellbar
  */
 
 #include <stdlib.h>
@@ -37,7 +37,7 @@ static void lcd_out(uint8_t data)
 	// obere 4 Bit maskieren
 	data &= 0xF0;
 
-	// Maske löschen
+	// Maske lÃ¶schen
 	LCD_PORT &= ~(0xF0>>(4-LCD_DB));
 
 	// Bits setzen
@@ -65,7 +65,7 @@ void lcd_init()
 
 	LCD_DDR |= pins;
 
-	// initial alle Ausgänge auf Null
+	// initial alle AusgÃ¤nge auf Null
 	LCD_PORT &= ~pins;
 
 	// warten auf die Bereitschaft des LCD
@@ -152,7 +152,7 @@ void lcd_command(uint8_t data)
 }
 
 /**
- * Sendet den Befehl zur Löschung des Displays
+ * Sendet den Befehl zur LÃ¶schung des Displays
  */
 void lcd_clear()
 {
@@ -181,7 +181,7 @@ void lcd_home()
 
 void lcd_setcursor(uint8_t x, uint8_t y)
 {
-	// Zeile auswählen
+	// Zeile auswÃ¤hlen
 	switch (y)
 	{
 		// 1. Zeile
@@ -204,7 +204,7 @@ void lcd_setcursor(uint8_t x, uint8_t y)
 			lcd_command(LCD_SET_DDADR + LCD_DDADR_LINE4 + x);
 			break;
 
-		// Ungültige Zeilenangabe
+		// UngÃ¼ltige Zeilenangabe
 		default:
 			return;
 	}
@@ -299,7 +299,7 @@ void lcd_generatechar(uint8_t code, const uint8_t *data)
 	// Startposition des Zeichens einstellen
 	lcd_command(LCD_SET_CGADR | (code<<3));
 
-	// Bitmuster übertragen
+	// Bitmuster Ã¼bertragen
 	for(uint8_t i=0; i<8; i++)
 		lcd_data(data[i]);
 }

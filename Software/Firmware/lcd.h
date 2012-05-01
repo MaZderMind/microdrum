@@ -10,9 +10,9 @@
 #define LCD_H_
 
 /**
- * Pinbelegung für des LCDs am Atmel
- * Alle LCD Pins müssen an einem Port angeschlossen sein und die 4
- * Datenleitungen müssen auf aufeinanderfolgenden Pins liegen
+ * Pinbelegung fÃ¼r des LCDs am Atmel
+ * Alle LCD Pins mÃ¼ssen an einem Port angeschlossen sein und die 4
+ * Datenleitungen mÃ¼ssen auf aufeinanderfolgenden Pins liegen
  */
 
 // LCD-Port
@@ -31,7 +31,7 @@
 #define LCD_EN        PB5
 
 /**
- * LCD Ausführungszeiten (MS=Millisekunden, US=Mikrosekunden)
+ * LCD AusfÃ¼hrungszeiten (MS=Millisekunden, US=Mikrosekunden)
  */
 
 #define LCD_BOOTUP_MS           15
@@ -49,8 +49,8 @@
 
 /**
  * Zeilendefinitionen des verwendeten LCD
- * Die Einträge hier sollten für LCDs mit Zeilenlängen von 16-20 Zeichen passen
- * Bei anderen Zeilenlängen müssen diese Einträge angepasst werden
+ * Die EintrÃ¤ge hier sollten fÃ¼r LCDs mit ZeilenlÃ¤ngen von 16-20 Zeichen passen
+ * Bei anderen ZeilenlÃ¤ngen mÃ¼ssen diese EintrÃ¤ge angepasst werden
  */
 
 #define LCD_DDADR_LINE1         0x00
@@ -64,7 +64,7 @@
 void lcd_init(void);
 
 /**
- * LCD löschen
+ * LCD lÃ¶schen
  */
 void lcd_clear(void);
 

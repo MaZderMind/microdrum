@@ -1,5 +1,5 @@
 /**
- * Ansteuerung eines MIDI-Gerätes über den UART-Controller
+ * Ansteuerung eines MIDI-GerÃ¤tes Ã¼ber den UART-Controller
  *
  * http://arduino.cc/en/Tutorial/Midi
  * http://www.mikrocontroller.net/articles/UART
@@ -34,13 +34,13 @@ static const char* const midi_notenames[] = {"C ", "C#", "D ", "D#", "E ", "F ",
 
 /**
  * Konfiguration des Midi-Kanals
- * @TODO: Über's Menü Konfigurierbar machen
+ * @TODO: Ãœber's MenÃ¼ Konfigurierbar machen
  */
 static const uint8_t midi_channel = 0;
 
 /**
  * Konfiguration der Instrumente
- * @TODO: Über's Menü Konfigurierbar machen
+ * @TODO: Ãœber's MenÃ¼ Konfigurierbar machen
  */
 static const uint8_t midi_instruments[8] = {
 	36, // 0 -> Bass Drum

@@ -21,7 +21,7 @@
 #include "io-config.h"
 
 /**
- * Allgemeine Routinen zum ansteuern der Peripherie (Taster, LEDs und Knöpfe)
+ * Allgemeine Routinen zum ansteuern der Peripherie (Taster, LEDs und KnÃ¶pfe)
  */
 #include "io.h"
 
@@ -41,19 +41,19 @@
 #include "instrument_names.h"
 
 /**
- * Mit dem Selektorrad ausgewähltes Instrument
+ * Mit dem Selektorrad ausgewÃ¤hltes Instrument
  */
 uint8_t selected_instrument = 0;
 
 
-// Forwärts-Deklaration der Event-Handler
+// ForwÃ¤rts-Deklaration der Event-Handler
 void io_selector_pressed(void);
 void io_selector_released(void);
 void io_selector_left(void);
 void io_selector_right(void);
 void midi_clock(uint8_t);
 
-// Forwärts-Deklaration der Instrumenten-Anzeige-Routine
+// ForwÃ¤rts-Deklaration der Instrumenten-Anzeige-Routine
 void print_selected_instrument(void);
 
 /**
@@ -74,7 +74,7 @@ main(void)
 	// Ein- & Ausgabe aktivieren
 	io_init();
 
-	// Event-Handler für Ein- & Ausgabe setzen
+	// Event-Handler fÃ¼r Ein- & Ausgabe setzen
 	io_selector_set_pressed_handler(io_selector_pressed);
 	io_selector_set_released_handler(io_selector_released);
 	io_selector_set_left_handler(io_selector_left);
@@ -85,18 +85,18 @@ main(void)
 
 	// den Midi-Clock Callback definieren
 	//   er soll alle 6 Midi-Clocks aufgerufen werden (das entspricht 8tel Noten),
-	//   dabei sollen 8 Steps durchgezählt werden (von 0 bis 7)
-	//     Würde das Steps-Zählen mit einer lokalen Variable gemacht, gäbe es Probleme
+	//   dabei sollen 8 Steps durchgezÃ¤hlt werden (von 0 bis 7)
+	//     WÃ¼rde das Steps-ZÃ¤hlen mit einer lokalen Variable gemacht, gÃ¤be es Probleme
 	//     beim Clock-Reset (neu Aufsetzen nach Pause oder Spulen)
 	midi_set_clock_interrupt(midi_clock, 6, N_STEPS);
 
 	// Das Hauptprogramm versinkt in einer Endlosschleife, welche die Eingaben der
-	// Buttons abnimmt, die LEDs ansteuert und Änderungen an den Drehknöpfen
-	// abliest. Die Änderungen an den Drehknöpfen werden als Midi-CC-Nachrichten
+	// Buttons abnimmt, die LEDs ansteuert und Ã„nderungen an den DrehknÃ¶pfen
+	// abliest. Die Ã„nderungen an den DrehknÃ¶pfen werden als Midi-CC-Nachrichten
 	// direkt versendet.
 	// Unterbrochen wird es durch Midi-Eingaben (siehe midi.c), wozu auch
-	// Midi-Clock-Nachrichten gehören. Diese unterbrechen den normalen Programmablauf
-	// und senden entsprechend dem aktuellen Zustand Midi-Noten zurück.
+	// Midi-Clock-Nachrichten gehÃ¶ren. Diese unterbrechen den normalen Programmablauf
+	// und senden entsprechend dem aktuellen Zustand Midi-Noten zurÃ¼ck.
 	for(;;) io_sync();
 
 	// Programmende
@@ -104,7 +104,7 @@ main(void)
 }
 
 /**
- * Das aktuell ausgewählte Instrument auf dem LCD ausgeben
+ * Das aktuell ausgewÃ¤hlte Instrument auf dem LCD ausgeben
  */
 void print_selected_instrument(void)
 {

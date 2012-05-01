@@ -37,10 +37,10 @@ void io_selector_detect_press(void)
 	// anliegender Wert am pin des Schalters
 	uint8_t pinvalue = !(SELECTOR_PIN & (1<<SELECTOR_PIN_PRESS));
 
-	// wenn der button noch gedrückt ist
+	// wenn der button noch gedrÃ¼ckt ist
 	if(pinvalue)
 	{
-		// intervall-counter bis 7 hoch zählen
+		// intervall-counter bis 7 hoch zÃ¤hlen
 		if(io_selector_state.pressed < 7)
 		{
 			io_selector_state.pressed++;
@@ -104,7 +104,7 @@ void io_selector_detect_rotation(void)
 
 	if(io_selector_state.left == 2 && !right)
 	{
-		// der Like kanal ging von low auf high während der rechte noch low ist
+		// der Like kanal ging von low auf high wÃ¤hrend der rechte noch low ist
 		if(right_callback) right_callback();
 	}
 
