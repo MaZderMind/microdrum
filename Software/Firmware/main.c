@@ -92,14 +92,12 @@ void io_selector_right(void)
 
 void midi_clock(uint8_t beat)
 {
+	midi_detrigger_instruments();
+
 	switch(beat)
 	{
 		case 0: {
-			midi_noteon(0, 36, 70);
-
-			//_delay_ms(5);
-
-			//midi_noteoff(0, 36);
+			midi_trigger_instrument(0, 70); // Bass Drum
 			break;
 		}
 
@@ -108,11 +106,7 @@ void midi_clock(uint8_t beat)
 		}
 
 		case 2: {
-			midi_noteon(0, 42, 70);
-
-			//_delay_ms(5);
-
-			//midi_noteoff(0, 42);
+			midi_trigger_instrument(5, 70); // Closed Hi Hat
 			break;
 		}
 
@@ -121,17 +115,8 @@ void midi_clock(uint8_t beat)
 		}
 
 		case 4: {
-			midi_noteon(0, 38, 70);
-			midi_noteon(0, 45, 70);
-			midi_noteon(0, 42+instrument_counter, instrument_accent ? 110 : 70);
-
-			//_delay_ms(5);
-
-			//midi_noteoff(0, 38);
-			//midi_noteoff(0, 45);
-			//midi_noteoff(0, 42);
-			//if(instrument_accent) midi_noteoff(0, 49);
-
+			midi_trigger_instrument(1, 70); // Snare Drum
+			midi_trigger_instrument(2, 70); // Mid-Tom
 			break;
 		}
 
@@ -140,11 +125,7 @@ void midi_clock(uint8_t beat)
 		}
 
 		case 6: {
-			midi_noteon(0, 42, 70);
-
-			//_delay_ms(5);
-
-			//midi_noteoff(0, 42);
+			midi_trigger_instrument(5, 70); // Closed Hi Hat
 			break;
 		}
 

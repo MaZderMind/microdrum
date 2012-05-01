@@ -10,6 +10,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
+#include "bits.h"
 #include "midi.h"
 
 /**
@@ -31,6 +32,8 @@ volatile uint8_t clock_callback_reset;
  * Zähler der interupt-routine
  */
 volatile uint8_t clock_callback_cnt;
+
+uint8_t midi_triggered_instruments = 0;
 
 /**
  * Die Midi-Kommunikation initialisieren
@@ -99,6 +102,24 @@ void midi_send(uint8_t data)
 
 	// Daten senden
     UDR = data;
+}
+
+void midi_detrigger_instruments(void)
+{
+	for(uint8_t instrument = 0; instrument < 8; instrument++)
+	{
+		if(BITSET(midi_triggered_instruments, instrument))
+		{
+			midi_noteoff(midi_channel, midi_instruments[instrument]);
+		}
+	}
+	midi_triggered_instruments = 0;
+}
+
+void midi_trigger_instrument(uint8_t instrument, uint8_t velocity)
+{
+	SETBIT(midi_triggered_instruments, instrument);
+	midi_noteon(midi_channel, midi_instruments[instrument], velocity);
 }
 
 /**

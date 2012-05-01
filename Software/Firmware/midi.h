@@ -33,6 +33,27 @@
 static const char* const midi_notenames[] = {"C ", "C#", "D ", "D#", "E ", "F ", "F#", "G ", "G#", "A ", "A#", "B "};
 
 /**
+ * Konfiguration des Midi-Kanals
+ * @TODO: Über's Menü Konfigurierbar machen
+ */
+static const uint8_t midi_channel = 0;
+
+/**
+ * Konfiguration der Instrumente
+ * @TODO: Über's Menü Konfigurierbar machen
+ */
+static const uint8_t midi_instruments[8] = {
+	36, // 0 -> Bass Drum
+	38, // 1 -> Snare Drum
+	45, // 2 -> Mid Tom
+	37, // 3 -> Rimshot
+	39, // 4 -> Hand Clap
+	42, // 5 ->
+	46, // 6 -> Open  Hi Hat
+	49  // 7 -> Crash Cymbal
+};
+
+/**
  * Die Midi-Kommunikation initialisieren
  */
 void midi_init(void);
@@ -46,6 +67,9 @@ typedef void (*midi_clock_interrupt)(uint8_t beat);
  * Die Clock-Interrupt-Callback-Routine setzen
  */
 void midi_set_clock_interrupt(midi_clock_interrupt cb, uint8_t prescale, uint8_t beats);
+
+void midi_detrigger_instruments(void);
+void midi_trigger_instrument(uint8_t instrument, uint8_t velocity);
 
 /**
  * Ein NoteOn-Kommando senden
