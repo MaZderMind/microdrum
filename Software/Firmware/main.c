@@ -95,61 +95,60 @@ void midi_clock(uint8_t beat)
 	switch(beat)
 	{
 		case 0: {
+			midi_noteon(0, 36, 70);
+
+			//_delay_ms(5);
+
+			//midi_noteoff(0, 36);
 			break;
 		}
 
 		case 1: {
-			midi_noteon(0, 36, 70);
-
-			_delay_ms(1);
-
-			midi_noteoff(0, 36);
 			break;
 		}
 
 		case 2: {
+			midi_noteon(0, 42, 70);
+
+			//_delay_ms(5);
+
+			//midi_noteoff(0, 42);
 			break;
 		}
 
 		case 3: {
-			midi_noteon(0, 42, 70);
-
-			_delay_ms(1);
-
-			midi_noteoff(0, 42);
 			break;
 		}
 
 		case 4: {
+			midi_noteon(0, 38, 70);
+			midi_noteon(0, 45, 70);
+			midi_noteon(0, 42+instrument_counter, instrument_accent ? 110 : 70);
+
+			//_delay_ms(5);
+
+			//midi_noteoff(0, 38);
+			//midi_noteoff(0, 45);
+			//midi_noteoff(0, 42);
+			//if(instrument_accent) midi_noteoff(0, 49);
+
 			break;
 		}
 
 		case 5: {
-			midi_noteon(0, 38, 70);
-			midi_noteon(0, 45, 70);
-			midi_noteon(0, 42, 70);
-			if(instrument_accent) midi_noteon(0, 49, 70);
-
-			_delay_ms(1);
-
-			midi_noteoff(0, 38);
-			midi_noteoff(0, 45);
-			midi_noteoff(0, 42);
-			if(instrument_accent) midi_noteoff(0, 49);
-
 			break;
 		}
 
 		case 6: {
+			midi_noteon(0, 42, 70);
+
+			//_delay_ms(5);
+
+			//midi_noteoff(0, 42);
 			break;
 		}
 
 		case 7: {
-			midi_noteon(0, 42, 70);
-
-			_delay_ms(1);
-
-			midi_noteoff(0, 42);
 			break;
 		}
 	}

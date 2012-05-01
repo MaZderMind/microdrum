@@ -25,12 +25,12 @@ volatile uint8_t clock_callback_prescale;
 /**
  * Clock-Counter-Reset, abgeletitet von der gewünschten Beats-Zahl
  */
-volatile uint8_t clock_callback_prescale_reset;
+volatile uint8_t clock_callback_reset;
 
 /**
  * Zähler der interupt-routine
  */
-volatile uint8_t clock_callback_prescale_cnt;
+volatile uint8_t clock_callback_cnt;
 
 /**
  * Die Midi-Kommunikation initialisieren
@@ -65,7 +65,7 @@ void midi_init(void)
 	// Variablen nullen
 	clock_callback = NULL;
 	clock_callback_prescale = 1;
-	clock_callback_prescale_cnt = 0;
+	clock_callback_cnt = 0;
  }
 
 /**
@@ -86,7 +86,7 @@ void midi_set_clock_interrupt(midi_clock_interrupt cb, uint8_t prescale, uint8_t
 	clock_callback_prescale = prescale;
 
 	// Die Beats-Zahl speichern
-	clock_callback_prescale_reset = prescale * beats;
+	clock_callback_reset = prescale * beats;
 }
 
 /**
@@ -200,26 +200,24 @@ ISR(USART_RXC_vect)
 	switch(input)
 	{
 		case MIDI_CLOCK: {
-			// ohne Callback kann das Clock-Signal ignoriert werden
+			uint8_t clk = clock_callback_cnt, prescale = clock_callback_prescale, reset = clock_callback_reset;
 
-			if(++clock_callback_prescale_cnt % clock_callback_prescale == 0)
+			if(clk % prescale == 0)
 			{
-				if(clock_callback)
-				{
-					clock_callback(clock_callback_prescale_cnt / clock_callback_prescale - 1);
-				}
+				if(clock_callback) clock_callback(clk / prescale);
 			}
 
-			if(clock_callback_prescale_cnt == clock_callback_prescale_reset)
+			if(++clk == reset)
 			{
-				clock_callback_prescale_cnt = 0;
+				clk = 0;
 			}
 
+			clock_callback_cnt = clk;
 			break;
 		}
 
 		case MIDI_START: {
-			clock_callback_prescale_cnt = 0;
+			clock_callback_cnt = 0;
 			break;
 		}
 	}
