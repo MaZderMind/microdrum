@@ -232,7 +232,7 @@ spaces:
 	dos2unix *.c *.h
 	sed -i 's/[ \t]*$$//g' *.c *.h
 
-doc:
+doc: *.c *.h
 	doxygen >/dev/null
 
 .PHONY:	all build elf hex eep lss sym program coff extcoff clean depend size spaces
