@@ -1,7 +1,7 @@
 #ifndef IO_PARAMETER_H_
 #define IO_PARAMETER_H_
 
-#define N_PARAMETERS 16
+#include "io_config.h"
 
 extern uint8_t parameter[N_PARAMETERS];
 

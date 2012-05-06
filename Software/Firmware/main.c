@@ -12,7 +12,7 @@
 #include "lcd.h"
 
 // * Konstanten, welche den Aufbau der Hardware beschreiben
-#include "io-config.h"
+#include "io_config.h"
 
 // Allgemeine Routinen zum ansteuern der Peripherie (Taster, LEDs und Knöpfe)
 #include "io.h"

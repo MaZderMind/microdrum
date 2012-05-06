@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <avr/io.h>
 
+#include "io_config.h"
 #include "io_parameter.h"
 
 uint8_t parameter[N_PARAMETERS];
