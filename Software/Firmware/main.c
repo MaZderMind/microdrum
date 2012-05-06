@@ -45,13 +45,13 @@ void print_selected_instrument(void);
 /**
  * Einstiegspunkt des Hauptprogramms
  */
-int __attribute__((OS_main)) 
+int __attribute__((OS_main))
 main(void)
 {
-	// Das LCD-Display aktivieren	
+	// Das LCD-Display aktivieren
 	lcd_init();
 
-	// Programmnamen ausgeben 
+	// Programmnamen ausgeben
 	lcd_pstring(PSTR("The Microdrum"));
 
 	// aktuellen Instrumentennamen ausgeben
@@ -103,7 +103,7 @@ void print_selected_instrument(void)
 
 /**
  * Event-Handler für das Niederdrücken des Selektorrads
- * 
+ *
  * @see io_selector_set_released_handler
  */
 void io_selector_pressed(void)
@@ -114,7 +114,7 @@ void io_selector_pressed(void)
 
 /**
  * Event-Handler für das Loslassen des Selektorrads nach dem Niederdrücken
- * 
+ *
  * @see io_selector_set_pressed_handler
  */
 void io_selector_released(void)
@@ -126,7 +126,7 @@ void io_selector_released(void)
 /**
  * Event-Handler, der aufgerufen wird, wenn das Selektorrad einen Schritt
  * nach links gedreht wurde
- * 
+ *
  * @see io_selector_set_left_handler
  */
 void io_selector_left(void)
@@ -135,14 +135,14 @@ void io_selector_left(void)
 		selected_instrument = N_INSTRUMENTS;
 	else
 		selected_instrument--;
-	
+
 	print_selected_instrument();
 }
 
 /**
  * Event-Handler, der aufgerufen wird, wenn das Selektorrad einen Schritt
  * nach rechts gedreht wurde
- * 
+ *
  * @see io_selector_set_right_handler
  */
 void io_selector_right(void)
@@ -151,7 +151,7 @@ void io_selector_right(void)
 		selected_instrument = 0;
 	else
 		selected_instrument++;
-	
+
 	print_selected_instrument();
 }
 
@@ -159,7 +159,7 @@ void io_selector_right(void)
 /**
  * Event-Handler, der aufgerufen wird, wenn eine gewisse Anzahl von
  * Midi-Clock-Nachrichten registriert wurden.
- * 
+ *
  * @see midi_set_clock_interrupt
  */
 void midi_clock(uint8_t beat)
@@ -204,7 +204,7 @@ void midi_clock(uint8_t beat)
 		case 7: {
 			break;
 		}
-		
+
 		case 8: {
 			midi_trigger_instrument(0, 70); // Bass Drum
 			break;
