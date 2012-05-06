@@ -19,8 +19,7 @@
 /**
  * Anzahl der Schritte des Sequencers
  */
-#define N_STEPS 8
-//#define N_STEPS 16
+#define N_STEPS 16
 
 #endif
 
