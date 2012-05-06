@@ -5,25 +5,12 @@
  * diese Datei kombiniert alle einzelnen Komponenten der Firmware zu einem sinnvollen Programm.
  */
 
-// Routinen zum Zugriff auf den Flash-Speicher
 #include <avr/pgmspace.h>
-
-// LCD-Ansteuerung
 #include "lcd.h"
-
-// * Konstanten, welche den Aufbau der Hardware beschreiben
 #include "io_config.h"
-
-// Allgemeine Routinen zum ansteuern der Peripherie (Taster, LEDs und Knöpfe)
 #include "io.h"
-
-// Routinen zum Ansteuern des Selektor-Knopfes
 #include "io_selector.h"
-
-// Midi-Routinen
 #include "midi.h"
-
-// Datei mit den Instrumentennamen
 #include "instrument_names.h"
 
 // Forwärts-Deklaration der Event-Handler
