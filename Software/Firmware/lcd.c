@@ -1,11 +1,10 @@
 /**
+ * @file
  * Ansteuerung eines HD44780 kompatiblen LCD im 4-Bit-Interfacemodus
  *
- * http://www.mikrocontroller.net/articles/HD44780
- * http://www.mikrocontroller.net/articles/AVR-GCC-Tutorial/LCD-Ansteuerung
- * http://www.reichelt.de/?ARTICLE=31652
- *
- * Die Pinbelegung ist über defines in lcd.h einstellbar
+ * - http://www.mikrocontroller.net/articles/HD44780
+ * - http://www.mikrocontroller.net/articles/AVR-GCC-Tutorial/LCD-Ansteuerung
+ * - http://www.reichelt.de/?ARTICLE=31652
  */
 
 #include <stdlib.h>
@@ -178,7 +177,6 @@ void lcd_home()
 /**
  * Setzt den Cursor in Spalte x (0..15) Zeile y (0..3)
  */
-
 void lcd_setcursor(uint8_t x, uint8_t y)
 {
 	// Zeile auswählen
@@ -211,7 +209,7 @@ void lcd_setcursor(uint8_t x, uint8_t y)
 }
 
 /**
- * Schreibt einen String auf das LCD
+ * Ausgabe eines Strings an der aktuellen Cursorposition
  */
 void lcd_string(const char *data)
 {
@@ -221,7 +219,7 @@ void lcd_string(const char *data)
 }
 
 /**
- * Schreibt einen String aus dem Flash auf das LCD
+ * Ausgabe eines Strings aus dem Flash an der aktuellen Cursorposition
  */
 void lcd_pstring(const char *pdata)
 {
@@ -243,6 +241,9 @@ void lcd_space(uint8_t n)
 		lcd_data(' ');
 }
 
+/**
+ * Ausgabe einer Zahl vom Typ int8_t als Text
+ */
 void lcd_int8(int8_t n)
 {
 	// from -127 up to 128
@@ -251,6 +252,9 @@ void lcd_int8(int8_t n)
 	lcd_string(s);
 }
 
+/**
+ * Ausgabe einer Zahl vom Typ uint8_t als Text
+ */
 void lcd_uint8(uint8_t n)
 {
 	// from 0 up to 255
@@ -259,6 +263,9 @@ void lcd_uint8(uint8_t n)
 	lcd_string(s);
 }
 
+/**
+ * Ausgabe einer Zahl vom Typ int16_t als Text
+ */
 void lcd_int16(int16_t n)
 {
 	// from -32768 up to 32767
@@ -267,6 +274,9 @@ void lcd_int16(int16_t n)
 	lcd_string(s);
 }
 
+/**
+ * Ausgabe einer Zahl vom Typ uint16_t als Text
+ */
 void lcd_uint16(uint16_t n)
 {
 	// from 0 up to 65535
@@ -275,6 +285,9 @@ void lcd_uint16(uint16_t n)
 	lcd_string(s);
 }
 
+/**
+ * Ausgabe einer Zahl vom Typ int32_t als Text
+ */
 void lcd_int32(int32_t n)
 {
 	// from -2147483648 up to 2147483647
@@ -283,6 +296,9 @@ void lcd_int32(int32_t n)
 	lcd_string(s);
 }
 
+/**
+ * Ausgabe einer Zahl vom Typ uint32_t als Text
+ */
 void lcd_uint32(uint32_t n)
 {
 	// from 0 up to 4294967295
@@ -292,7 +308,10 @@ void lcd_uint32(uint32_t n)
 }
 
 /**
- * Schreibt ein Zeichen in den Character Generator RAM
+ * Definition eines benutzerdefinierten Sonderzeichens.
+ *
+ * data muss auf ein Array[5] mit den Spaltencodes des zu definierenden Zeichens
+ * zeigen
  */
 void lcd_generatechar(uint8_t code, const uint8_t *data)
 {
