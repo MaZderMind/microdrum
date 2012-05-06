@@ -26,12 +26,6 @@
 // Datei mit den Instrumentennamen
 #include "instrument_names.h"
 
-/**
- * Mit dem Selektorrad ausgewähltes Instrument
- */
-uint8_t selected_instrument = 0;
-
-
 // Forwärts-Deklaration der Event-Handler
 void io_selector_pressed(void);
 void io_selector_released(void);
@@ -41,6 +35,11 @@ void midi_clock(uint8_t);
 
 // Forwärts-Deklaration der Instrumenten-Anzeige-Routine
 void print_selected_instrument(void);
+
+/**
+ * Mit dem Selektorrad ausgewähltes Instrument
+ */
+uint8_t selected_instrument = 0;
 
 /**
  * Einstiegspunkt des Hauptprogramms
