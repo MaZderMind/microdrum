@@ -1,3 +1,8 @@
+/**
+ * @file
+ * Informationen über die Peripherie-Konfiguration
+ */
+
 #ifndef IO_CONFIG_H_
 #define IO_CONFIG_H_
 
@@ -22,4 +27,3 @@
 #define N_STEPS 16
 
 #endif
-
