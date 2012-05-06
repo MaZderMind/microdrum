@@ -1,13 +1,38 @@
+/**
+ * @file
+ * Ansteuerung des Potentiometer-Arrays zur Einstellugn von Parametern
+ */
+
 #include <stdint.h>
 #include <avr/io.h>
 
 #include "io_config.h"
 #include "io_parameter.h"
 
+/**
+ * Extern zugänglicher Status der Parameter
+ */
 uint8_t parameter[N_PARAMETERS];
 
+/**
+ * Mapping zum zuordnen der Multiplexer-Ausgänge
+ *
+ * Die Multiplexer-Ausgänge auf den Parameter-Platinen sind, um das Platinenlayout
+ * einseitig und ohen zu viele Brücken ausführen zu können, so angelegt, wie es
+ * platz-mäßig am besten passt.
+ *
+ * Dieses Array ordnet der jeweiligen Multiplexer-Ansteuerung die Entsprechende,
+ * logische Parameterkennung zu.
+ *
+ * Aus ähnlichen Gründen sind einige Potentiometer anders herum eingebaut, so dass
+ * ein maximaler Ausschlag 0 und ein minimaler 512 bedeutet. Der invert-Parameter
+ * steuert, dass bei diesen der gemessene Wert invertiert wird.
+ */
 struct {
+	/// Zuordnung zwischen Multiplexer-Ansteuerung zur logischen Parameterkennung
 	uint8_t mapping;
+	
+	/// Invertieren des Wertes
 	uint8_t invert;
 } parameter_map[N_PARAMETERS] = {
 	{7,  0},
@@ -29,52 +54,63 @@ struct {
 	{10, 1}
 };
 
-
+/**
+ * Die Parameter-Boards initialisieren
+ */
 void io_parameter_init()
 {
-	//ADC aktivieren, Prescalerauf 64
-	ADCSRA |= (1<<ADEN) | (1<<ADPS2) | (1<<ADPS1);
+	// ADC aktivieren, Prescalerauf 64
+	SETBITS(ADCSRA, BIT(ADEN) | BIT(ADPS2) | BIT(ADPS1));
 
 	// interne 2,56V als Referenz
-	ADMUX |= (1<<REFS0) | (1<<REFS1);
+	SETBITS(ADMUX, BIT(REFS0) | BIT(REFS1));
 }
 
+/**
+ * Einen Parameter auslesen
+ *
+ * mit dem chain-Parameter wird der linke oder der rechte Chip gewählt
+ */
 uint8_t io_parameter_read(uint8_t chain)
 {
-	//MUX-Register auf null
-	ADMUX &= ~((1<<MUX0) | (1<<MUX1) | (1<<MUX2) | (1<<MUX3));
+	// MUX-Register auf null
+	CLEARBITS(ADMUX, BIT(MUX0) | BIT(MUX1) | BIT(MUX2) | BIT(MUX3));
 
 	// 4 Bits von chain nehmen und nach MUX0 schieben, sodass sie auf MUX0-MUX3 abgebildet werden
-	//   FIXME!!
+	// @todo Methode von lcd.c und io.c kopieren
 	ADMUX |= (chain & 0b1111) << MUX0;
 
 	// Wandlung starten
-	ADCSRA |= (1<<ADSC);
+	SETBIT(ADCSRA, <ADSC);
 
 	// auf Abschluss der Konvertierung warten
-	while(ADCSRA & (1<<ADSC));
+	while(BITSET(ADCSRA, ADSC));
 
 	// Wert lesen und wegwerfen
 	uint16_t temp = ADCW;
-
 	temp = 0;
+	
+	// Anzahl der Messungen
 	uint8_t n = 4;
 	for(uint8_t i = 0; i < n; i++)
 	{
 		// Wandlung starten
-		ADCSRA |= (1<<ADSC);
+		SETBIT(ADCSRA, ADSC);
 
 		// auf Abschluss der Konvertierung warten
-		while(ADCSRA & (1<<ADSC));
+		while(BITSET(ADCSRA, ADSC));
 
 		// Wert lesen und addieren
-		temp+=ADCW;
+		temp += ADCW;
 	}
 
 	// die Summe durch die Anzahl teilen und auf 8 Bit reduzieren
 	return (temp / n) >> 2;
 }
 
+/**
+ * Die aktuelle Einstellung der Parameter mit dem internen Zustand synchronisieren
+ */
 void io_parameter_sync(uint8_t cycle)
 {
 	uint8_t n, v;
@@ -83,17 +119,23 @@ void io_parameter_sync(uint8_t cycle)
 	n = parameter_map[cycle].mapping;
 	v = io_parameter_read(0);
 
+	// ggf. invertieren
 	if(parameter_map[cycle].invert)
+	{
 		v = 255 - v;
-
+	}
+	
 	parameter[n] = v;
 
 	// zweiter Chip auf den Parameter-Boards
 	n = parameter_map[cycle + 8].mapping;
 	v = io_parameter_read(1);
 
+	// ggf. invertieren
 	if(parameter_map[cycle + 8].invert)
+	{
 		v = 255 - v;
-
+	}
+	
 	parameter[n] = v;
 }
