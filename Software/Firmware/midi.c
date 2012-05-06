@@ -56,16 +56,16 @@ void midi_init(void)
 
 	// wenn nötig, aktivierung des 2X Modus
 	#if USE_2X
-		UCSRA |= (1 << U2X);
+		SETBIT(UCSRA, U2X);
 	#else
-		UCSRA &= ~(1 << U2X);
+		CLEARBIT(UCSRA, U2X);
 	#endif
 
 	// Asynchron 8N1 (8 Datenbits, keine Parität, 1 Stop-Bit)
-	UCSRC = (1<<URSEL) | (1<<UCSZ1) | (1<<UCSZ0);
+	SETBITS(UCSRC, BIT(URSEL) | BIT(URSEL) | BIT(UCSZ0));
 
 	// Das TransmitEnable-Bit und das ReceiveEnable-Bit im UartControlAndStatusRegisterB setzen
-	UCSRB |= (1<<TXEN) | (1<<RXEN);
+	SETBITS(UCSRB, BIT(TXEN) | BIT(RXEN));
 
 	// Variablen nullen
 	clock_callback = NULL;
@@ -79,7 +79,7 @@ void midi_init(void)
 void midi_set_clock_interrupt(midi_clock_handler cb, uint8_t prescale, uint8_t beats)
 {
 	// Das ReceiveCompleteInterruptEnable im UartControlAndStatusRegisterB setzen
-	UCSRB |= (1<<RXCIE);
+	SETBIT(UCSRB, RXCIE);
 
 	// Interupts global aktivieren
 	sei();
@@ -100,7 +100,7 @@ void midi_set_clock_interrupt(midi_clock_handler cb, uint8_t prescale, uint8_t b
 void midi_send(uint8_t data)
 {
 	//  warten bis Senden möglich ist
-	while(!(UCSRA & (1<<UDRE)));
+	while(BITCLEAR(UCSRA, UDRE));
 
 	// Daten senden
 	UDR = data;
