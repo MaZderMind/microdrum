@@ -47,7 +47,7 @@ void io_select(uint8_t channel)
  */
 void io_sync(void)
 {
-	// Tastendrücke und Rad-drehung detektieren
+	// Tastendrücke und Rad-Drehung detektieren
 	io_selector_detect();
 
 	// Alle 8 Multiplexer-Zustände ablaufen
