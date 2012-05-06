@@ -116,6 +116,7 @@ SIZE = avr-size
 NM = avr-nm
 AVRDUDE = avrdude
 REMOVE = rm -f
+REMOVEDIR = rm -rf
 MV = mv -f
 
 # Define all object files.
@@ -216,6 +217,7 @@ clean:
 	$(REMOVE) $(TARGET).hex $(TARGET).eep $(TARGET).cof $(TARGET).elf \
 	$(TARGET).map $(TARGET).sym $(TARGET).lss \
 	$(OBJ) $(LST) $(SRC:.c=.s) $(SRC:.c=.d)
+	$(REMOVEDIR) doc
 
 depend:
 	if grep '^# DO NOT DELETE' $(MAKEFILE) >/dev/null; \
