@@ -1,8 +1,6 @@
 /**
+ * @file
  * Ansteuerung eines MIDI-Gerätes über den UART-Controller
- *
- * http://arduino.cc/en/Tutorial/Midi
- * http://www.mikrocontroller.net/articles/UART
  */
 
 #include <stdlib.h>
@@ -11,12 +9,13 @@
 #include <avr/interrupt.h>
 
 #include "bits.h"
+#include "io_config.h"
 #include "midi.h"
 
 /**
  * Pointer zum gespeicherten Clock-Interrupt-Callback
  */
-volatile midi_clock_interrupt clock_callback;
+volatile midi_clock_handler clock_callback;
 
 /**
  * gespeicherter Clock-Prescaler
@@ -33,6 +32,9 @@ volatile uint8_t clock_callback_reset;
  */
 volatile uint8_t clock_callback_cnt;
 
+/**
+ * 8-Bit-Feld zum speichern der derzeit aktiven Instrumente
+ */
 uint8_t midi_triggered_instruments = 0;
 
 /**
@@ -69,12 +71,12 @@ void midi_init(void)
 	clock_callback = NULL;
 	clock_callback_prescale = 1;
 	clock_callback_cnt = 0;
- }
+}
 
-/**
- * Die Clock-Interrupt-Callback-Routine setzen
+/*
+ * Doku wird vom Header-File übernommen
  */
-void midi_set_clock_interrupt(midi_clock_interrupt cb, uint8_t prescale, uint8_t beats)
+void midi_set_clock_interrupt(midi_clock_handler cb, uint8_t prescale, uint8_t beats)
 {
 	// Das ReceiveCompleteInterruptEnable im UartControlAndStatusRegisterB setzen
 	UCSRB |= (1<<RXCIE);
@@ -101,32 +103,47 @@ void midi_send(uint8_t data)
 	while(!(UCSRA & (1<<UDRE)));
 
 	// Daten senden
-    UDR = data;
+	UDR = data;
 }
 
+/*
+ * Ein Instrument triggern
+ * siehe Header-Datie für mehr Informationen
+ */
+void midi_trigger_instrument(uint8_t instrument, uint8_t velocity)
+{
+	// NoteOn-Nachricht senden
+	midi_noteon(midi_channel, midi_instruments[instrument], velocity);
+
+	// das entsprechende Bit im Bitfeld setzen
+	SETBIT(midi_triggered_instruments, instrument);
+}
+
+
+/*
+ * Alle zuvor aktiven Instrumente deaktivieren
+ * siehe Header-Datie für mehr Informationen
+ */
 void midi_detrigger_instruments(void)
 {
-	for(uint8_t instrument = 0; instrument < 8; instrument++)
+	// für alle Instrumente
+	for(uint8_t instrument = 0; instrument < N_INSTRUMENTS; instrument++)
 	{
+		// Testen, ob das entsprechende Bit gesetzt ist
 		if(BITSET(midi_triggered_instruments, instrument))
 		{
+			// und sende ggf. eine NoteOff-Nachricht
 			midi_noteoff(midi_channel, midi_instruments[instrument]);
 		}
 	}
+
+	// Das Bitfeld leeren
 	midi_triggered_instruments = 0;
 }
 
-void midi_trigger_instrument(uint8_t instrument, uint8_t velocity)
-{
-	SETBIT(midi_triggered_instruments, instrument);
-	midi_noteon(midi_channel, midi_instruments[instrument], velocity);
-}
-
-/**
+/*
  * Ein NoteOn-Kommando senden
- *  channel gibt dabei im Bereich von 0-15 den Midi-Kanal an
- *  note kann von 0-127 eine Note zwischen C -1 und G 9 angeben
- *  velocity gibt die Anschlagsstärke im Bereich von 1-127 an (0 = NoteOff)
+ * siehe Header-Datie für mehr Informationen
  */
 void midi_noteon(uint8_t channel, uint8_t note, uint8_t velocity)
 {
@@ -140,7 +157,7 @@ void midi_noteon(uint8_t channel, uint8_t note, uint8_t velocity)
 	midi_send(velocity & 0x7F);
 }
 
-/**
+/*
  * Ein NoteOff-Kommando senden
  */
 void midi_noteoff(uint8_t channel, uint8_t note)
@@ -155,6 +172,9 @@ void midi_noteoff(uint8_t channel, uint8_t note)
 	midi_send(0);
 }
 
+/*
+ * Eine Midi-Controll-Change-Nachricht senden
+ */
 void midi_cc(uint8_t channel, uint8_t controller, uint8_t value)
 {
 	// Midi-Kanal senden
@@ -176,7 +196,7 @@ void midi_cc(uint8_t channel, uint8_t controller, uint8_t value)
  *  Midi-Note 0  =  C -1
  *            1  =  C#-1
  *            2  =  D -1
- *               
+ *              ...
  *          125  =  F 9
  *          126  =  F#9
  *          127  =  G 9
@@ -214,33 +234,41 @@ const char* midi_notename(uint8_t note)
  */
 ISR(USART_RXC_vect)
 {
-	// anliegendes Kommando aus dem Puffer lesen
+	// anliegende Nachricht aus dem Puffer lesen
 	uint8_t input = UDR;
 
-	// Befehl auswerten
+	// Nachricht auswerten
 	switch(input)
 	{
+		// Eine Clock-Nachricht
 		case MIDI_CLOCK: {
+			// Lokale kopien der volatile-Variablen
 			uint8_t clk = clock_callback_cnt, prescale = clock_callback_prescale, reset = clock_callback_reset;
 
+			// Wenn der Prescaler erreicht wurde
 			if(clk % prescale == 0)
 			{
+				// den Event-Handler auslösen, dabei den passenden Beat ausrechnen
 				if(clock_callback) clock_callback(clk / prescale);
 			}
 
+			// Den Clock-Zähler erhöhen, dabei prüfen ob die max. Beat-Zahl erreicht wurde
 			if(++clk == reset)
 			{
+				// Den Clock-Zähler zurück setzen
 				clk = 0;
 			}
 
+			// Den Clock-Zähler zurück in die volatile-Variable schreiben
 			clock_callback_cnt = clk;
 			break;
 		}
 
+		// Eine Midi-Start-Nachricht
 		case MIDI_START: {
+			// Den Clock-Zähler auf 0 zurück fahren
 			clock_callback_cnt = 0;
 			break;
 		}
 	}
 }
-
