@@ -6,9 +6,10 @@
 #include <stdint.h>
 #include <avr/io.h>
 #include <util/delay.h>
+#include "bits.h"
 #include "lcd.h"
 #include "io.h"
-//#include "io_parameter.h"
+#include "io_parameter.h"
 #include "io_selector.h"
 
 /*
@@ -17,11 +18,10 @@
 void io_init(void)
 {
 	// Mux-Lines auf Ausgang
-	MUX_DDR |= (1<<MUX_PIN0) | (1<<MUX_PIN1) | (1<<MUX_PIN2);
+	SETBITS(MUX_DDR, BIT(MUX_PIN0) | BIT(MUX_PIN1) | BIT(MUX_PIN2));
 
 	// Initialisieren der Parameter-Boards
-	//io_parameter_init();
-
+	io_parameter_init();
 
 	// Initialisieren des Selektorrades
 	io_selector_init();
@@ -33,7 +33,7 @@ void io_init(void)
 void io_select(uint8_t channel)
 {
 	// Die drei Multiplexer-Pins auf 1 schalten
-	MUX_PORT &= ~(0x07 << MUX_PIN);
+	CLEARBITS(MUX_PORT, BIT(MUX_PIN0) | BIT(MUX_PIN1) | BIT(MUX_PIN2));
 
 	// Die Kanalwahl auf 3 Bits beschränken und auf die Multiplexer-Pins legen
 	MUX_PORT |= ((channel & 0x07) << MUX_PIN);
@@ -57,6 +57,6 @@ void io_sync(void)
 		io_select(cycle);
 
 		// Werte der Parameter-Boards auslesen
-		//io_parameter_sync(cycle);
+		io_parameter_sync(cycle);
 	}
 }

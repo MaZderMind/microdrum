@@ -6,6 +6,7 @@
 #include <stdint.h>
 #include <avr/io.h>
 
+#include "bits.h"
 #include "io_config.h"
 #include "io_parameter.h"
 
@@ -59,11 +60,11 @@ struct {
  */
 void io_parameter_init()
 {
-	// ADC aktivieren, Prescalerauf 64
+	// ADC aktivieren, Prescaler auf 64
 	SETBITS(ADCSRA, BIT(ADEN) | BIT(ADPS2) | BIT(ADPS1));
 
-	// interne 2,56V als Referenz
-	SETBITS(ADMUX, BIT(REFS0) | BIT(REFS1));
+	// VCC als Referenz
+	SETBITS(ADMUX, BIT(REFS0));
 }
 
 /**
@@ -77,18 +78,16 @@ uint8_t io_parameter_read(uint8_t chain)
 	CLEARBITS(ADMUX, BIT(MUX0) | BIT(MUX1) | BIT(MUX2) | BIT(MUX3));
 
 	// 4 Bits von chain nehmen und nach MUX0 schieben, sodass sie auf MUX0-MUX3 abgebildet werden
-	// @todo Methode von lcd.c und io.c kopieren
-	ADMUX |= (chain & 0b1111) << MUX0;
+	ADMUX |= ((chain & 0x0F) << MUX0);
 
 	// Wandlung starten
-	SETBIT(ADCSRA, <ADSC);
+	SETBIT(ADCSRA, ADSC);
 
 	// auf Abschluss der Konvertierung warten
 	while(BITSET(ADCSRA, ADSC));
 
-	// Wert lesen und wegwerfen
-	uint16_t temp = ADCW;
-	temp = 0;
+	// Temp-Variable
+	uint16_t temp = 0;
 	
 	// Anzahl der Messungen
 	uint8_t n = 4;

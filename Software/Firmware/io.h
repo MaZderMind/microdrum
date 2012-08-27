@@ -9,12 +9,12 @@
 /**
  * Port, an dem die Multiplexer angeschlossen werden
  */
-#define MUX_PORT      PORTA
+#define MUX_PORT      PORTC
 
 /**
  * Data-Direction-Register der Multiplexer
  */
-#define MUX_DDR       DDRA
+#define MUX_DDR       DDRC
 
 /**
  * Erster Pin des Multiplexers
@@ -22,7 +22,7 @@
  * Der zweite und dritte Pin müssen an den beiden darauffolgenden Pins
  * des Controllers angeschlossen werden
  */
-#define MUX_PIN       PA0
+#define MUX_PIN       PC0
 
 /**
  * Erster Pin des Multiplexers (automatisch abgeleitet)

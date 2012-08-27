@@ -10,6 +10,7 @@
 #include "io_config.h"
 #include "io.h"
 #include "io_selector.h"
+#include "io_parameter.h"
 #include "midi.h"
 #include "instrument_names.h"
 
