@@ -83,7 +83,7 @@ void print_selected_instrument(void)
 	lcd_setcursor(0, 1);
 	lcd_uint8(selected_instrument + 1);
 	lcd_pstring(PSTR("/8 "));
-	lcd_pstring((char*)pgm_read_word(&(names[selected_instrument])));
+	lcd_pstring(names[selected_instrument]);
 	lcd_space(5);
 }
 
@@ -118,7 +118,7 @@ void io_selector_released(void)
 void io_selector_left(void)
 {
 	if(selected_instrument == 0)
-		selected_instrument = N_INSTRUMENTS;
+		selected_instrument = N_INSTRUMENTS-1;
 	else
 		selected_instrument--;
 
@@ -133,7 +133,7 @@ void io_selector_left(void)
  */
 void io_selector_right(void)
 {
-	if(selected_instrument == N_INSTRUMENTS)
+	if(selected_instrument == N_INSTRUMENTS-1)
 		selected_instrument = 0;
 	else
 		selected_instrument++;
