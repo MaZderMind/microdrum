@@ -31,10 +31,10 @@ uint8_t parameter[N_PARAMETERS];
  */
 struct {
 	/// Zuordnung zwischen Multiplexer-Ansteuerung zur logischen Parameterkennung
-	uint8_t mapping;
+	uint8_t mapping:7;
 	
 	/// Invertieren des Wertes
-	uint8_t invert;
+	uint8_t invert:1;
 } parameter_map[N_PARAMETERS] = {
 	{7,  0},
 	{6,  0},
