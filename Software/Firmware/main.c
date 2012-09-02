@@ -6,6 +6,8 @@
  */
 
 #include <avr/pgmspace.h>
+#include <string.h>
+
 #include "lcd.h"
 #include "io_config.h"
 #include "io.h"
@@ -28,6 +30,11 @@ void print_selected_instrument(void);
  * Mit dem Selektorrad ausgewähltes Instrument
  */
 uint8_t selected_instrument = 0;
+
+/**
+ * Zuletzt übermittelte CC-Parameter
+ */
+uint8_t last_sent_parameter[N_PARAMETERS];
 
 /**
  * Einstiegspunkt des Hauptprogramms
@@ -63,6 +70,9 @@ main(void)
 	//     beim Clock-Reset (neu Aufsetzen nach Pause oder Spulen)
 	midi_set_clock_interrupt(midi_clock, 6, N_STEPS);
 
+	// Die Kopie der zuletzt versendeten Midi-CC-Parameter auf 0 setzen
+	memset(last_sent_parameter, 0, sizeof(last_sent_parameter));
+
 	// Das Hauptprogramm versinkt in einer Endlosschleife, welche die Eingaben der
 	// Buttons abnimmt, die LEDs ansteuert und Änderungen an den Drehknöpfen
 	// abliest. Die Änderungen an den Drehknöpfen werden als Midi-CC-Nachrichten
@@ -70,7 +80,28 @@ main(void)
 	// Unterbrochen wird es durch Midi-Eingaben (siehe midi.c), wozu auch
 	// Midi-Clock-Nachrichten gehören. Diese unterbrechen den normalen Programmablauf
 	// und senden entsprechend dem aktuellen Zustand Midi-Noten zurück.
-	for(;;) io_sync();
+	for(;;)
+	{
+		io_sync();
+
+		// Für alle Parameter prüfen, ob sich was geändert hat
+		for(uint8_t n = 0; n < N_PARAMETERS; n++)
+		{
+			// Für Midi-CC-Nachrichten sind nur die unterten 7 Bits relevant
+			// @TODO: ggf. anzahl der shift-aufrufe optimieren
+			uint8_t last = last_sent_parameter[n] >> 1;
+			uint8_t next = parameter[n] >> 1;
+
+			if(last != next)
+			{
+				// und ggf. eine Midi-CC-Nachricht absetzen
+				midi_cc(n, next);
+			}
+		}
+
+		// Kopie der Parameter aktualisieren
+		memcpy(last_sent_parameter, parameter, sizeof(last_sent_parameter));
+	}
 
 	// Programmende
 	return 0;
