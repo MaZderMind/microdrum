@@ -62,7 +62,7 @@ void midi_init(void)
 	#endif
 
 	// Asynchron 8N1 (8 Datenbits, keine Parität, 1 Stop-Bit)
-	SETBITS(UCSRC, BIT(URSEL) | BIT(URSEL) | BIT(UCSZ0));
+	SETBITS(UCSRC, BIT(URSEL) | BIT(UCSZ0) | BIT(UCSZ1));
 
 	// Das TransmitEnable-Bit und das ReceiveEnable-Bit im UartControlAndStatusRegisterB setzen
 	SETBITS(UCSRB, BIT(TXEN) | BIT(RXEN));
