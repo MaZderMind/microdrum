@@ -170,17 +170,17 @@ void midi_detrigger_instruments(void);
  * note kann von 0-127 eine Note zwischen C -1 und G 9 angeben
  * velocity gibt die Anschlagsstärke im Bereich von 1-127 an (0 entspricht NoteOff).
  */
- void midi_noteon(uint8_t channel, uint8_t note, uint8_t velocity);
+void midi_noteon(uint8_t note, uint8_t velocity);
 
 /**
  * Ein NoteOff-Kommando senden
  */
-void midi_noteoff(uint8_t channel, uint8_t note);
+void midi_noteoff(uint8_t note);
 
 /**
  * Eine Midi-Controll-Change-Nachricht senden
  */
-void midi_cc(uint8_t channel, uint8_t controller, uint8_t value);
+void midi_cc(uint8_t controller, uint8_t value);
 
 /**
  * Den Namen einer Note zusammenbauen

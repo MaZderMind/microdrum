@@ -113,7 +113,7 @@ void midi_send(uint8_t data)
 void midi_trigger_instrument(uint8_t instrument, uint8_t velocity)
 {
 	// NoteOn-Nachricht senden
-	midi_noteon(midi_channel, midi_instruments[instrument], velocity);
+	midi_noteon(midi_instruments[instrument], velocity);
 
 	// das entsprechende Bit im Bitfeld setzen
 	SETBIT(midi_triggered_instruments, instrument);
@@ -133,7 +133,7 @@ void midi_detrigger_instruments(void)
 		if(BITSET(midi_triggered_instruments, instrument))
 		{
 			// und sende ggf. eine NoteOff-Nachricht
-			midi_noteoff(midi_channel, midi_instruments[instrument]);
+			midi_noteoff(midi_instruments[instrument]);
 		}
 	}
 
@@ -145,10 +145,10 @@ void midi_detrigger_instruments(void)
  * Ein NoteOn-Kommando senden
  * siehe Header-Datie für mehr Informationen
  */
-void midi_noteon(uint8_t channel, uint8_t note, uint8_t velocity)
+void midi_noteon(uint8_t note, uint8_t velocity)
 {
 	// Midi-Kanal senden
-	midi_send((channel & 0x0F) | MIDI_NOTEON);
+	midi_send((midi_channel & 0x0F) | MIDI_NOTEON);
 
 	// Noten-Wert senden
 	midi_send(note & 0x7F);
@@ -160,10 +160,10 @@ void midi_noteon(uint8_t channel, uint8_t note, uint8_t velocity)
 /*
  * Ein NoteOff-Kommando senden
  */
-void midi_noteoff(uint8_t channel, uint8_t note)
+void midi_noteoff(uint8_t note)
 {
 	// Midi-Kanal senden
-	midi_send((channel & 0x0F) | MIDI_NOTEOFF);
+	midi_send((midi_channel & 0x0F) | MIDI_NOTEOFF);
 
 	// Noten-Wert senden
 	midi_send(note & 0x7F);
@@ -175,10 +175,10 @@ void midi_noteoff(uint8_t channel, uint8_t note)
 /*
  * Eine Midi-Controll-Change-Nachricht senden
  */
-void midi_cc(uint8_t channel, uint8_t controller, uint8_t value)
+void midi_cc(uint8_t controller, uint8_t value)
 {
 	// Midi-Kanal senden
-	midi_send((channel & 0x0F) | MIDI_CC);
+	midi_send((midi_channel & 0x0F) | MIDI_CC);
 
 	// Controller-Nummer
 	midi_send(controller & 0x7F);
