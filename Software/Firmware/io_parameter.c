@@ -107,26 +107,20 @@ uint8_t io_parameter_read(uint8_t chain)
  */
 void io_parameter_sync(uint8_t cycle)
 {
-	uint8_t n, v;
+	io_parameter_readchip(cycle, 0, 0,  0);
+	io_parameter_readchip(cycle, 1, 8,  0);
+	io_parameter_readchip(cycle, 2, 0, 16);
+	io_parameter_readchip(cycle, 3, 8, 16);
+}
 
-	// erster Chip auf den Parameter-Boards
-	n = parameter_map[cycle].mapping;
-	v = io_parameter_read(0);
-
-	// ggf. invertieren
-	if(parameter_map[cycle].invert)
-	{
-		v = 255 - v;
-	}
-	
-	parameter[n] = v;
-
-	// zweiter Chip auf den Parameter-Boards
-	n = parameter_map[cycle + 8].mapping;
-	v = io_parameter_read(1);
+void io_parameter_readchip(uint8_t cycle, uint8_t chip, uint8_t mapping, uint8_t offset)
+{
+	// dritter Chip auf den Parameter-Boards
+	uint8_t n = parameter_map[cycle+mapping].mapping + offset;
+	uint8_t v = io_parameter_read(chip);
 
 	// ggf. invertieren
-	if(parameter_map[cycle + 8].invert)
+	if(parameter_map[cycle+mapping].invert)
 	{
 		v = 255 - v;
 	}
