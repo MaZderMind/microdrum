@@ -88,19 +88,15 @@ main(void)
 		for(uint8_t n = 0; n < N_PARAMETERS; n++)
 		{
 			// Für Midi-CC-Nachrichten sind nur die unterten 7 Bits relevant
-			// @TODO: ggf. anzahl der shift-aufrufe optimieren
-			uint8_t last = last_sent_parameter[n] >> 1;
-			uint8_t next = parameter[n] >> 1;
+			uint8_t next = (parameter[n] >> 1);
 
-			if(last != next)
+			if(last_sent_parameter[n] != next)
 			{
 				// und ggf. eine Midi-CC-Nachricht absetzen
 				midi_cc(n, next);
+				last_sent_parameter[n] = next;
 			}
 		}
-
-		// Kopie der Parameter aktualisieren
-		memcpy(last_sent_parameter, parameter, sizeof(last_sent_parameter));
 	}
 
 	// Programmende
