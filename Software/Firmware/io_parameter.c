@@ -69,8 +69,6 @@ void io_parameter_init()
 
 /**
  * Einen Parameter auslesen
- *
- * mit dem chain-Parameter wird der linke oder der rechte Chip gewählt
  */
 uint8_t io_parameter_read(uint8_t chain)
 {
@@ -103,19 +101,10 @@ uint8_t io_parameter_read(uint8_t chain)
 }
 
 /**
- * Die aktuelle Einstellung der Parameter mit dem internen Zustand synchronisieren
+ * Einen Chip auslesen
  */
-void io_parameter_sync(uint8_t cycle)
-{
-	io_parameter_readchip(cycle, 0, 0,  0);
-	io_parameter_readchip(cycle, 1, 8,  0);
-	io_parameter_readchip(cycle, 2, 0, 16);
-	io_parameter_readchip(cycle, 3, 8, 16);
-}
-
 void io_parameter_readchip(uint8_t cycle, uint8_t chip, uint8_t mapping, uint8_t offset)
 {
-	// dritter Chip auf den Parameter-Boards
 	uint8_t n = parameter_map[cycle+mapping].mapping + offset;
 	uint8_t v = io_parameter_read(chip);
 
@@ -126,4 +115,15 @@ void io_parameter_readchip(uint8_t cycle, uint8_t chip, uint8_t mapping, uint8_t
 	}
 	
 	parameter[n] = v;
+}
+
+/**
+ * Die aktuelle Einstellung der Parameter mit dem internen Zustand synchronisieren
+ */
+void io_parameter_sync(uint8_t cycle)
+{
+	io_parameter_readchip(cycle, 0, 0,  0);
+	io_parameter_readchip(cycle, 1, 8,  0);
+	io_parameter_readchip(cycle, 2, 0, 16);
+	io_parameter_readchip(cycle, 3, 8, 16);
 }
