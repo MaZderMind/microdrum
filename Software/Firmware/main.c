@@ -7,6 +7,7 @@
 
 #include <avr/pgmspace.h>
 #include <string.h>
+#include <util/delay.h>
 
 #include "lcd.h"
 #include "io_config.h"
@@ -31,10 +32,17 @@ void print_selected_instrument(void);
  */
 uint8_t selected_instrument = 0;
 
-/**
- * Zuletzt übermittelte CC-Parameter
- */
-uint8_t last_sent_parameter[N_PARAMETERS];
+struct parameter_state_struct {
+	uint8_t last;
+	uint8_t positive;
+} parameter_state[N_PARAMETERS];
+
+// Positiv-Flag
+uint8_t positive(int8_t x)
+{
+	if (x > 0) return 1;
+	else return 0;
+}
 
 /**
  * Einstiegspunkt des Hauptprogramms
@@ -71,7 +79,7 @@ main(void)
 	midi_set_clock_interrupt(midi_clock, 6, N_STEPS);
 
 	// Die Kopie der zuletzt versendeten Midi-CC-Parameter auf 0 setzen
-	memset(last_sent_parameter, 0, sizeof(last_sent_parameter));
+	memset(parameter_state, 0, sizeof(parameter_state));
 
 	// Das Hauptprogramm versinkt in einer Endlosschleife, welche die Eingaben der
 	// Buttons abnimmt, die LEDs ansteuert und Änderungen an den Drehknöpfen
@@ -87,15 +95,32 @@ main(void)
 		// Für alle Parameter prüfen, ob sich was geändert hat
 		for(uint8_t n = 0; n < N_PARAMETERS; n++)
 		{
-			// Für Midi-CC-Nachrichten sind nur die unterten 7 Bits relevant
-			uint8_t next = (parameter[n] >> 1);
+			// Refernzen zu den relevanten Array-Einträgen
+			uint8_t value = (parameter[n] >> 1);
+			struct parameter_state_struct *state = &parameter_state[n];
 
-			if(last_sent_parameter[n] != next)
+			// Differenz zw. dem aktuellen und dem letzten Wert bilden
+			int8_t diff = ((int8_t)value - (int8_t)state->last);
+
+			if(diff == 0)
 			{
-				// und ggf. eine Midi-CC-Nachricht absetzen
-				midi_cc(n, next);
-				last_sent_parameter[n] = next;
+				// Wenn sich nix geändert hat, muss auch nix getan werden
 			}
+			else if(positive(diff) == state->positive)
+			{
+				// Wenn die Richtung sich nicht geändert hat, wird der Wert als MidiCC
+				midi_cc(n, value);
+			}
+			else
+			{
+				// Richtung hat sich geändert, einen Moment innehalten
+				state->positive = positive(diff);
+
+				// ggf. hier einen Counter unterbringen und mehr als einen Zyklus abwarten
+			}
+
+			// Letzten Wert merken
+			state->last = value;
 		}
 	}
 
