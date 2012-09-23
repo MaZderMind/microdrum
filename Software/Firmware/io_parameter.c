@@ -32,7 +32,7 @@ uint8_t parameter[N_PARAMETERS];
 struct {
 	/// Zuordnung zwischen Multiplexer-Ansteuerung zur logischen Parameterkennung
 	uint8_t mapping:7;
-	
+
 	/// Invertieren des Wertes
 	uint8_t invert:1;
 } parameter_map[N_PARAMETERS] = {
@@ -113,7 +113,7 @@ void io_parameter_readchip(uint8_t cycle, uint8_t chip, uint8_t mapping, uint8_t
 	{
 		v = 255 - v;
 	}
-	
+
 	parameter[n] = v;
 }
 

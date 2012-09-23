@@ -35,7 +35,7 @@ io_selector_rotated_handler right_callback;
 struct {
 	/// Entprell-Zähler des linken Ausgangs des Selektorrades
 	unsigned left:2;
-	
+
 	/// Entprell-Zähler des rechten Ausgangs des Selektorrades
 	unsigned right:2;
 
@@ -117,7 +117,7 @@ void io_selector_detect_rotation(void)
 			io_selector_state.left++;
 		}
 	}
-	
+
 	// wenn er down ist
 	else
 	{
@@ -125,8 +125,8 @@ void io_selector_detect_rotation(void)
 		io_selector_state.left = 0;
 	}
 
-	
-	
+
+
 	// Wenn er rechte Ausgang up ist
 	if(right)
 	{
@@ -136,7 +136,7 @@ void io_selector_detect_rotation(void)
 			io_selector_state.right++;
 		}
 	}
-	
+
 	// wenn er down ist
 	else
 	{
@@ -144,15 +144,15 @@ void io_selector_detect_rotation(void)
 		io_selector_state.right = 0;
 	}
 
-	
-	
+
+
 	// Wenn der linke Ausgang min. 3 Zyklen up war und der rechte noch down ist
 	if(io_selector_state.left == 2 && !right)
 	{
 		// den Callback anspringen
 		if(right_callback) right_callback();
 	}
-	
+
 	// Wenn der rechte Ausgang min. 3 Zyklen up war und der linke noch down ist
 	else if(io_selector_state.right == 2 && !left)
 	{
