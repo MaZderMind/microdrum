@@ -33,8 +33,8 @@ void print_selected_instrument(void);
 uint8_t selected_instrument = 0;
 
 struct parameter_state_struct {
-	uint8_t last;
-	uint8_t positive;
+	unsigned positive:1;
+	unsigned last:7;
 } parameter_state[N_PARAMETERS];
 
 // Positiv-Flag
