@@ -27,6 +27,13 @@
 #define CLEARBITS(x,y) ((x) &= (~(y)))
 
 /**
+ * Löscht eine Reihe von Bits in einem Bitfeld
+ *
+ * Beispiel: CLEARBITS(PORTB, BIT(PB0) | BIT(PB1));
+ */
+#define TOGGLEBITS(x,y) ((x) ^= (y))
+
+/**
  * Setzt ein einzelnes Bit in einem Bitfeld
  *
  * Beispiel: SETBIT(PORTB, PB0);
@@ -39,6 +46,13 @@
  * Beispiel: CLEARBIT(PORTB, PB0);
  */
 #define CLEARBIT(x,y) CLEARBITS((x), (BIT((y))))
+
+/**
+ * Löscht ein einzelnes Bit in einem Bitfeld
+ *
+ * Beispiel: CLEARBIT(PORTB, PB0);
+ */
+#define TOGGLEBIT(x,y) TOGGLEBITS((x), (BIT((y))))
 
 /**
  * Prüft, ob ein einzelnes Bit in einem Bitfeld gesetzt ist
