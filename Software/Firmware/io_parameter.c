@@ -84,19 +84,10 @@ uint8_t io_parameter_read(uint8_t chain)
 	// auf Abschluss der Wandlung warten
 	while(BITSET(ADCSRA, ADSC));
 
-	// Temp-Variable mit Messwert füllen (und weg werfen)
+	// Wert messen
 	uint16_t temp = ADCW;
 
-	// 2. Wandlung starten
-	SETBIT(ADCSRA, ADSC);
-
-	// auf Abschluss der Wandlung warten
-	while(BITSET(ADCSRA, ADSC));
-
-	// Wert lesen und addieren
-	temp = ADCW;
-
-	// die Summe durch die Anzahl teilen und auf 8 Bit reduzieren
+	// Messwert auf 8 Bit reduzieren
 	return (temp >> 2);
 }
 
