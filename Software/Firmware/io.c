@@ -25,6 +25,9 @@ void io_init(void)
 
 	// Initialisieren des Selektorrades
 	io_selector_init();
+
+	SETBITS(DDRC, BIT(PC3) | BIT(PC4));
+	CLEARBITS(PORTC, BIT(PC3) | BIT(PC4));
 }
 
 /**
@@ -55,6 +58,12 @@ void io_sync(void)
 
 		// Multiplexer umschalten
 		io_select(cycle);
+
+		if(cycle == 3 || cycle == 6) SETBIT(PORTC, PC3);
+		else CLEARBIT(PORTC, PC3);
+
+		if(cycle == 1 || cycle == 5) SETBIT(PORTC, PC4);
+		else CLEARBIT(PORTC, PC4);
 
 		// Werte der Parameter-Boards auslesen
 		io_parameter_sync(cycle);
