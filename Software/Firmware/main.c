@@ -51,15 +51,6 @@ uint8_t positive(int8_t x)
 int __attribute__((OS_main))
 main(void)
 {
-	// Das LCD-Display aktivieren
-	lcd_init();
-
-	// Programmnamen ausgeben
-	lcd_pstring(PSTR("The Microdrum"));
-
-	// aktuellen Instrumentennamen ausgeben
-	print_selected_instrument();
-
 	// Ein- & Ausgabe aktivieren
 	io_init();
 
@@ -68,6 +59,15 @@ main(void)
 	io_selector_set_released_handler(io_selector_released);
 	io_selector_set_left_handler(io_selector_left);
 	io_selector_set_right_handler(io_selector_right);
+
+	// Das LCD-Display aktivieren
+	lcd_init();
+
+	// Programmnamen ausgeben
+	lcd_pstring(PSTR("The Microdrum"));
+
+	// aktuellen Instrumentennamen ausgeben
+	print_selected_instrument();
 
 	// Midi aktivieren
 	midi_init();
