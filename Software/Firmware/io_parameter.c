@@ -49,7 +49,7 @@ uint8_t is_positive(int8_t n)
  * logische Parameterkennung zu.
  *
  * Aus ähnlichen Gründen sind einige Potentiometer anders herum eingebaut, so dass
- * ein maximaler Ausschlag 0 und ein minimaler 255 bedeutet. Der invert-Parameter
+ * ein maximaler Ausschlag 0 und ein minimaler 127 bedeutet. Der invert-Parameter
  * steuert, dass bei diesen der gemessene Wert invertiert wird.
  */
 struct {
@@ -120,13 +120,19 @@ uint8_t io_parameter_read(uint8_t chain)
 /**
  * Einen Chip auslesen
  */
-void io_parameter_readchip(uint8_t cycle, uint8_t chip, uint8_t mapping, uint8_t offset)
+void io_parameter_readchip(uint8_t cycle, uint8_t chip)
 {
-	uint8_t n = parameter_map[cycle+mapping].mapping + offset;
+	uint8_t offset =  (chip & 0x02) * 8;
+	cycle += ((chip & 0x01) * 8);
+
+	// Parameternummer-Mapping auslesen
+	uint8_t n = parameter_map[cycle].mapping + offset;
+
+	// Wert auslesen
 	uint8_t value = io_parameter_read(chip);
 
 	// ggf. invertieren
-	if(parameter_map[cycle+mapping].invert)
+	if(parameter_map[cycle].invert)
 		value = 127 - value;
 
 	struct parameter_state_struct *state = &parameter_state[n];
@@ -161,10 +167,10 @@ void io_parameter_readchip(uint8_t cycle, uint8_t chip, uint8_t mapping, uint8_t
  */
 void io_parameter_sync(uint8_t cycle)
 {
-	io_parameter_readchip(cycle, 0, 0,  0);
-	io_parameter_readchip(cycle, 1, 8,  0);
-	io_parameter_readchip(cycle, 2, 0, 16);
-	io_parameter_readchip(cycle, 3, 8, 16);
+	io_parameter_readchip(cycle, 0);
+	io_parameter_readchip(cycle, 1);
+	io_parameter_readchip(cycle, 2);
+	io_parameter_readchip(cycle, 3);
 }
 
 /*
