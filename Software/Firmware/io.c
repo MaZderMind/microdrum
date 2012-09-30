@@ -20,14 +20,14 @@ void io_init(void)
 	// Mux-Lines auf Ausgang
 	SETBITS(MUX_DDR, BIT(MUX_PIN0) | BIT(MUX_PIN1) | BIT(MUX_PIN2));
 
+	// Sync-Timer-Pin auf Ausgang
+	SETBIT(TIMER_DDR, TIMER_PIN);
+
 	// Initialisieren der Parameter-Boards
 	io_parameter_init();
 
 	// Initialisieren des Selektorrades
 	io_selector_init();
-
-	SETBITS(DDRC, BIT(PC3) | BIT(PC4));
-	CLEARBITS(PORTC, BIT(PC3) | BIT(PC4));
 }
 
 /**
@@ -50,6 +50,9 @@ void io_select(uint8_t channel)
  */
 void io_sync(void)
 {
+	// Sync-Timer-Led umschalten
+	TOGGLEBIT(TIMER_PORT, TIMER_PIN);
+
 	// Alle 8 Multiplexer-Zustände ablaufen
 	for(uint8_t cycle = 0; cycle < 8; cycle++)
 	{
@@ -58,12 +61,6 @@ void io_sync(void)
 
 		// Multiplexer umschalten
 		io_select(cycle);
-
-		if(cycle == 3 || cycle == 6) SETBIT(PORTC, PC3);
-		else CLEARBIT(PORTC, PC3);
-
-		if(cycle == 1 || cycle == 5) SETBIT(PORTC, PC4);
-		else CLEARBIT(PORTC, PC4);
 
 		// Werte der Parameter-Boards auslesen
 		io_parameter_sync(cycle);

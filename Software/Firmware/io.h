@@ -39,6 +39,24 @@
  */
 #define MUX_PIN2      (MUX_PIN+2)
 
+
+
+/**
+ * Port an dem die Sync-Timer-Led angeschlossen ist
+ */
+#define TIMER_PORT    PORTD
+
+/**
+ * Data-Direction-Register des Timer-Ports
+ */
+#define TIMER_DDR     DDRD
+
+/**
+ * Pin an dem die Sync-Timer-Led angeschlossen ist
+ */
+#define TIMER_PIN     PD2
+
+
 /**
  * Die Peripherie initialisieren
  */

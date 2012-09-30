@@ -82,8 +82,6 @@ main(void)
 	// Die Kopie der zuletzt versendeten Midi-CC-Parameter auf 0 setzen
 	memset(parameter_state, 0, sizeof(parameter_state));
 
-	SETBIT(DDRD, PD2);
-
 	// Das Hauptprogramm versinkt in einer Endlosschleife, welche die Eingaben der
 	// Buttons abnimmt, die LEDs ansteuert und Änderungen an den Drehknöpfen
 	// abliest. Die Änderungen an den Drehknöpfen werden als Midi-CC-Nachrichten
@@ -93,7 +91,6 @@ main(void)
 	// und senden entsprechend dem aktuellen Zustand Midi-Noten zurück.
 	for(;;)
 	{
-		TOGGLEBIT(PORTD, PD2);
 		io_sync();
 
 		// Für alle Parameter prüfen, ob sich was geändert hat
