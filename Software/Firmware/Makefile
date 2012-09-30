@@ -35,7 +35,7 @@ CINCS =
 
 
 CDEBUG = -g$(DEBUG)
-CWARN = -Wall -Wstrict-prototypes
+CWARN = -Wall -Wstrict-prototypes -pedantic
 CTUNING = -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -finline-limit=3 -fno-inline-small-functions -fno-tree-scev-cprop -fno-split-wide-types -fno-jump-tables 
 LDTUNING = -Wl,--gc-sections,--relax,--print-gc-sections
 #CEXTRA = -Wa,-adhlns=$(<:.c=.lst)
