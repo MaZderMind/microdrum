@@ -11,9 +11,32 @@
 #include "io_parameter.h"
 
 /**
- * Extern zugänglicher Status der Parameter
+ * Event-Handler, der aufgerufen wird, wenn sich ein Parameter geändert hat
  */
-uint8_t parameter[N_PARAMETERS];
+io_parameter_changed_handler changed_callback;
+
+/**
+ * Maintainence-Werte der Parameter
+ */
+struct parameter_state_struct
+{
+	/// Vorzeichen der letzten Wert-Änderung
+	unsigned positive:1;
+
+	/// Zuletzt gelesener Wert
+	unsigned last:7;
+} parameter_state[N_PARAMETERS];
+
+/**
+ * Ermitteln des Vorzeichens
+ *
+ * gibt 1 für positiv und 0 für negativ oder null zurück
+ */
+uint8_t is_positive(int8_t n)
+{
+	if (n > 0) return 1;
+	else return 0;
+}
 
 /**
  * Mapping zum zuordnen der Multiplexer-Ausgänge
@@ -26,7 +49,7 @@ uint8_t parameter[N_PARAMETERS];
  * logische Parameterkennung zu.
  *
  * Aus ähnlichen Gründen sind einige Potentiometer anders herum eingebaut, so dass
- * ein maximaler Ausschlag 0 und ein minimaler 512 bedeutet. Der invert-Parameter
+ * ein maximaler Ausschlag 0 und ein minimaler 255 bedeutet. Der invert-Parameter
  * steuert, dass bei diesen der gemessene Wert invertiert wird.
  */
 struct {
@@ -65,6 +88,9 @@ void io_parameter_init()
 
 	// VCC als Referenz
 	SETBITS(ADMUX, BIT(REFS0));
+
+	// Maintainence-Werte der Parameter nullen
+	memset(parameter_state, 0, sizeof(parameter_state));
 }
 
 /**
@@ -87,8 +113,8 @@ uint8_t io_parameter_read(uint8_t chain)
 	// Wert messen
 	uint16_t temp = ADCW;
 
-	// Messwert auf 8 Bit reduzieren
-	return (temp >> 2);
+	// Messwert auf 7 Bit reduzieren
+	return (temp >> 3);
 }
 
 /**
@@ -97,15 +123,37 @@ uint8_t io_parameter_read(uint8_t chain)
 void io_parameter_readchip(uint8_t cycle, uint8_t chip, uint8_t mapping, uint8_t offset)
 {
 	uint8_t n = parameter_map[cycle+mapping].mapping + offset;
-	uint8_t v = io_parameter_read(chip);
+	uint8_t value = io_parameter_read(chip);
 
 	// ggf. invertieren
 	if(parameter_map[cycle+mapping].invert)
+		value = 127 - value;
+
+	struct parameter_state_struct *state = &parameter_state[n];
+
+	// Differenz zw. dem aktuellen und dem letzten Wert bilden
+	int8_t diff = ((int8_t)value - (int8_t)state->last);
+
+	// Anhand der Differenz entscheiden, was getan werden soll
+	if(diff == 0)
 	{
-		v = 255 - v;
+		// Wenn sich nix geändert hat, muss auch nix getan werden
+	}
+	else if(is_positive(diff) == state->positive)
+	{
+		// Wenn die Richtung sich nicht geändert hat, den callback auslösen
+		if(changed_callback) changed_callback(n, value);
+	}
+	else
+	{
+		// Richtung hat sich geändert, einen Moment innehalten
+		state->positive = is_positive(diff);
+
+		// ggf. hier einen Counter unterbringen und mehr als einen Zyklus abwarten
 	}
 
-	parameter[n] = v;
+	// Letzten Wert merken
+	state->last = value;
 }
 
 /**
@@ -117,4 +165,12 @@ void io_parameter_sync(uint8_t cycle)
 	io_parameter_readchip(cycle, 1, 8,  0);
 	io_parameter_readchip(cycle, 2, 0, 16);
 	io_parameter_readchip(cycle, 3, 8, 16);
+}
+
+/*
+ * Den Event-Handler für das Ändern eines Parameters setzen
+ */
+void io_parameter_set_changed_handler(io_parameter_changed_handler callback)
+{
+	changed_callback = callback;
 }
