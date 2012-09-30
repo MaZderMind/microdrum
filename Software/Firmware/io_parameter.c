@@ -1,9 +1,10 @@
 /**
  * @file
- * Ansteuerung des Potentiometer-Arrays zur Einstellugn von Parametern
+ * Ansteuerung des Potentiometer-Arrays zur Einstellung von Parametern
  */
 
 #include <stdint.h>
+#include <string.h>
 #include <avr/io.h>
 
 #include "bits.h"
@@ -54,10 +55,10 @@ uint8_t is_positive(int8_t n)
  */
 struct {
 	/// Zuordnung zwischen Multiplexer-Ansteuerung zur logischen Parameterkennung
-	uint8_t mapping:7;
+	unsigned mapping:7;
 
 	/// Invertieren des Wertes
-	uint8_t invert:1;
+	unsigned invert:1;
 } parameter_map[N_PARAMETERS] = {
 	{7,  0},
 	{6,  0},

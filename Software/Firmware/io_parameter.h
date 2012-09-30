@@ -1,6 +1,6 @@
 /**
  * @file
- * Ansteuerung des Potentiometer-Arrays zur Einstellugn von Parametern, externes Interface
+ * Ansteuerung des Potentiometer-Arrays zur Einstellung von Parametern, externes Interface
  */
 
 #ifndef IO_PARAMETER_H_
