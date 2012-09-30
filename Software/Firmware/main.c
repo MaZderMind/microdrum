@@ -6,8 +6,6 @@
  */
 
 #include <avr/pgmspace.h>
-#include <string.h>
-#include <util/delay.h>
 
 #include "bits.h"
 #include "lcd.h"
