@@ -243,13 +243,17 @@ ISR(USART_RXC_vect)
 		// Eine Clock-Nachricht
 		case MIDI_CLOCK: {
 			// Lokale kopien der volatile-Variablen
-			uint8_t clk = clock_callback_cnt, prescale = clock_callback_prescale, reset = clock_callback_reset;
+			uint8_t
+				clk = clock_callback_cnt,
+				prescale = clock_callback_prescale,
+				reset = clock_callback_reset;
 
 			// Wenn der Prescaler erreicht wurde
 			if(clk % prescale == 0)
 			{
 				// den Event-Handler auslösen, dabei den passenden Beat ausrechnen
-				if(clock_callback) clock_callback(clk / prescale);
+				if(clock_callback)
+					clock_callback(clk / prescale);
 			}
 
 			// Den Clock-Zähler erhöhen, dabei prüfen ob die max. Beat-Zahl erreicht wurde
