@@ -8,7 +8,7 @@
 MCU = atmega16
 FORMAT = ihex
 TARGET = main
-SRC = $(TARGET).c lcd.c io.c io_selector.c io_parameter.c midi.c
+SRC = $(TARGET).c lcd.c io.c io_selector.c io_parameter.c io_sequencer.c midi.c
 ASRC = 
 OPT = s
 

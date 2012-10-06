@@ -160,10 +160,13 @@ void io_parameter_changed(uint8_t parameter, uint8_t value)
  * Event-Handler, der aufgerufen wird, wenn eine gewisse Anzahl von
  * Midi-Clock-Nachrichten registriert wurden.
  *
+ * Achtung: eine Interrupt-Routine
+ *
  * @see midi_set_clock_interrupt
  */
 void midi_clock(uint8_t beat)
 {
+	io_sequencer_set(beat);
 	midi_detrigger_instruments();
 
 	switch(beat)

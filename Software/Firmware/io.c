@@ -11,6 +11,7 @@
 #include "io.h"
 #include "io_parameter.h"
 #include "io_selector.h"
+#include "io_sequencer.h"
 
 /*
  * Die Peripherie initialisieren
@@ -25,6 +26,9 @@ void io_init(void)
 
 	// Initialisieren der Parameter-Boards
 	io_parameter_init();
+
+	// Initialisieren der Sequencer-Boards
+	io_sequencer_init();
 
 	// Initialisieren des Selektorrades
 	io_selector_init();
@@ -57,10 +61,17 @@ void io_sync(void)
 	for(uint8_t cycle = 0; cycle < 8; cycle++)
 	{
 		// Tastendrücke und Rad-Drehung detektieren
+		// TODO: ggf. aus dem loop rausnehmen
 		io_selector_detect();
+
+		// Sequencer Leds ausschalten
+		io_sequencer_presync();
 
 		// Multiplexer umschalten
 		io_select(cycle);
+
+		// Sequencer Leds ggf. wieder an schalten und und Taster detektieren
+		io_sequencer_sync(cycle);
 
 		// Werte der Parameter-Boards auslesen
 		io_parameter_sync(cycle);
