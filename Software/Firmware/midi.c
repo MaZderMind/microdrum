@@ -30,6 +30,15 @@ typedef struct {
 
 	// Zähler der interupt-routine
 	uint8_t clk;
+
+	// Auf Daten wartendes Kommando
+	uint8_t last_command;
+
+	// Anzahl der fehlenden Bytes
+	uint8_t bytes_required;
+
+	// Daten des Kommandos
+	uint8_t data_bytes[3];
 } midi_clock_interrupt_state_t;
 
 volatile midi_clock_interrupt_state_t midi_clock_interrupt_state;
@@ -70,7 +79,7 @@ void midi_init(void)
 	SETBITS(UCSRB, BIT(TXEN) | BIT(RXEN));
 
 	// Status nullen
-	memset(&midi_clock_interrupt_state, 0, sizeof(midi_clock_interrupt_state_t));
+	memset((void*)&midi_clock_interrupt_state, 0, sizeof(midi_clock_interrupt_state_t));
 }
 
 /*
@@ -230,6 +239,145 @@ const char* midi_notename(uint8_t note)
 }
 
 /**
+ * Midi 2-Byte-Nachrichten (z.B. Pitch-Wheel oder SongPositionPointer) zusammensetzen
+ */
+uint16_t midi_combine_bytes(uint8_t first, uint8_t second)
+{
+	uint16_t _14bit;
+
+	_14bit = (uint16_t)second;
+	_14bit <<= 7;
+	_14bit |= (uint16_t)first;
+
+	return _14bit;
+}
+
+uint8_t midi_process_realtime(uint8_t input, midi_clock_interrupt_state_t *state)
+{
+	switch(input)
+	{
+		// Eine Clock-Nachricht
+		case MIDI_CLOCK: {
+			if(state->paused)
+				return 1;
+
+			// Wenn der Prescaler erreicht wurde
+			if(state->clk % state->prescale == 0)
+			{
+				// den Event-Handler auslösen, dabei den passenden Beat ausrechnen
+				if(clock_callback)
+					clock_callback(state->clk / state->prescale);
+			}
+
+			// Den Clock-Zähler erhöhen, dabei prüfen ob die max. Beat-Zahl erreicht wurde
+			if(++state->clk == state->reset)
+			{
+				// Den Clock-Zähler zurück setzen
+				state->clk = 0;
+			}
+			return 1;
+		}
+
+		// Eine MIDI-Start-Nachricht setzt den Clock-Zähler auf 0 zurück
+		// und aktiviert den Clock-Zähler
+		case MIDI_START: {
+			// Den Clock-Zähler auf 0 zurück fahren
+			state->clk = 0;
+			state->paused = 0;
+			return 1;
+		}
+
+		// Eine MIDI-Stop-Nachricht stoppt den Clock-Zähler
+		case MIDI_STOP: {
+			state->paused = 1;
+			return 1;
+		}
+
+		// Eine MIDI-Ĉontinue-Nachricht aktiviert den Clock-Zähler
+		case MIDI_CONTINUE: {
+			state->paused = 0;
+			return 1;
+		}
+	}
+
+	// Dies war keine Realtime-Nachricht
+	return 0;
+}
+
+
+
+uint8_t midi_process_data(uint8_t input, midi_clock_interrupt_state_t *state)
+{
+	// eine wartende Nachricht
+	if(state->last_command > 0)
+	{
+		// Ein weiteres Byte dieser Nachricht empfangen
+		state->data_bytes[state->bytes_required] = input;
+
+		// Alle benötigten Bytes für diese Nachricht wurden empfangen
+		if(state->bytes_required == 0)
+		{
+			// Empfangene Nachricht verarbeiten
+			switch(state->last_command)
+			{
+				// eine SPP-Nachricht
+				case MIDI_SONG_POSITION_POINTER: {
+					// empfangene Bytes zu Midi-Beats zusammenführen
+					uint16_t spp = midi_combine_bytes(state->data_bytes[1], state->data_bytes[0]);
+
+					// jeder Midi-Beat entspricht 6 Clock-Cycles,
+					// welche dann auf die Länge des internen Sequenzers umgelegt wird
+					state->clk = (spp * 6) % state->reset;
+				}
+			}
+
+			// wartendes Kommando wurde abgearbeitet
+			state->last_command = 0;
+		}
+
+		// sonst die Anzahl der benötigten Bytes reduzieren
+		else state->bytes_required--;
+
+		// Es wurde ein Datenbyte verarbeitet
+		return 1;
+	}
+
+	// Keine wartetende Nachricht
+	return 0;
+}
+
+
+uint8_t midi_process_message(uint8_t input, midi_clock_interrupt_state_t *state)
+{
+	// Nachricht auswerten
+	switch(input)
+	{
+		case MIDI_SONG_POSITION_POINTER: {
+			state->last_command = MIDI_SONG_POSITION_POINTER;
+			state->bytes_required = 1; // 2 Bytes
+
+			return 1;
+		}
+
+#if 0
+		case MIDI_SONG_SELECT: {
+			// select saved pattern via Callback
+			state->clk = 0;
+			return 1;
+		}
+#endif
+	}
+
+	// Keine verarbeitete Nachricht
+	return 0;
+}
+
+
+
+
+
+
+/**
  * UART Empfangs-Interrupt
  */
 ISR(USART_RXC_vect)
@@ -240,80 +388,16 @@ ISR(USART_RXC_vect)
 	// State aus dem RAM lesen
 	midi_clock_interrupt_state_t state = midi_clock_interrupt_state;
 
-#if 0
-	// a pending command
-	if(last_command)
-	{
-		// save another required byte received
-		data_bytes[--bytes_required] = input;
 
-		if(bytes_required == 0)
+	// Realtime-Nachrichten verarbeiten (können zu jedem Zeitpunkt auftreten)
+	if(!midi_process_realtime(input, &state))
+	{
+		// Daten von Mehrteil-Nachrichten verarbeiten
+		if(!midi_process_data(input, &state))
 		{
-			// all bytes for that command received
+			// Kommando-Nachrichten verarbeiten
+			midi_process_message(input, &state);
 		}
-	}
-#endif
-
-	// Nachricht auswerten
-	switch(input)
-	{
-		// Eine Clock-Nachricht
-		case MIDI_CLOCK: {
-			if(state.paused)
-				return;
-
-			// Wenn der Prescaler erreicht wurde
-			if(state.clk % state.prescale == 0)
-			{
-				// den Event-Handler auslösen, dabei den passenden Beat ausrechnen
-				if(clock_callback)
-					clock_callback(state.clk / state.prescale);
-			}
-
-			// Den Clock-Zähler erhöhen, dabei prüfen ob die max. Beat-Zahl erreicht wurde
-			if(++state.clk == state.reset)
-			{
-				// Den Clock-Zähler zurück setzen
-				state.clk = 0;
-			}
-			break;
-		}
-
-		// Eine MIDI-Start-Nachricht setzt den Clock-Zähler auf 0 zurück
-		// und aktiviert den Clock-Zähler
-		case MIDI_START: {
-			// Den Clock-Zähler auf 0 zurück fahren
-			state.clk = 0;
-			state.paused = 0;
-			break;
-		}
-
-		// Eine MIDI-Stop-Nachricht stoppt den Clock-Zähler
-		case MIDI_STOP: {
-			state.paused = 1;
-			break;
-		}
-
-		// Eine MIDI-Ĉontinue-Nachricht aktiviert den Clock-Zähler
-		case MIDI_CONTINUE: {
-			state.paused = 0;
-			break;
-		}
-
-#if 0
-		case MIDI_SONG_POSITION_POINTER: {
-			last_command = MIDI_SONG_POSITION_POINTER;
-			bytes_required = 1; // 2 Bytes
-			break;
-		}
-#endif
-
-#if 0
-		case MIDI_SONG_SELECT: {
-			// select saved pattern via Callback
-			state.clk = 0;
-		}
-#endif
 	}
 
 	// State zurück in den RAM schreiben

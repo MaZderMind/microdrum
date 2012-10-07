@@ -39,6 +39,13 @@
 #define MIDI_CONTINUE 0xFB
 
 /**
+ * Midi-Song-Position-Pointer-Nachricht
+ *
+ * wird versendet um den internen Song-Pointer auf einen definierten Wert zu setzen
+ */
+#define MIDI_SONG_POSITION_POINTER 0xF2
+
+/**
  * Eine Midi-NoteOn-Nachricht
  *
  * Schaltet eine Note im Synthesizer an. Bei einem Drum-Synthesizer ist die
