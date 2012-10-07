@@ -32,6 +32,7 @@
  */
 void io_sequencer_init(void);
 
+void io_sequencer_presync(uint8_t cycle);
 void io_sequencer_sync(uint8_t cycle);
 void io_sequencer_set(uint8_t sequence);
 
