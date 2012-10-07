@@ -123,6 +123,11 @@ void lcd_int8(int8_t n);
 void lcd_uint8(uint8_t n);
 
 /**
+ * Ausgabe einer Zahl vom Typ uint8_t als Hex-Text
+ */
+void lcd_uint8_hex(uint8_t n);
+
+/**
  * Ausgabe einer Zahl vom Typ int16_t als Text
  */
 void lcd_int16(int16_t n);

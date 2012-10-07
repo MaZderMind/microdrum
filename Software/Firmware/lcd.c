@@ -263,6 +263,18 @@ void lcd_uint8(uint8_t n)
 	lcd_string(s);
 }
 
+
+/**
+ * Ausgabe einer Zahl vom Typ uint8_t als Hex-Text
+ */
+void lcd_uint8_hex(uint8_t n)
+{
+	// from 0 up to FF
+	char s[3];
+	utoa(n, s, 16);
+	lcd_string(s);
+}
+
 /**
  * Ausgabe einer Zahl vom Typ int16_t als Text
  */
