@@ -13,6 +13,7 @@
 #include "io.h"
 #include "io_selector.h"
 #include "io_parameter.h"
+#include "io_sequencer.h"
 #include "midi.h"
 #include "instrument_names.h"
 
