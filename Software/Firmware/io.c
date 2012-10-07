@@ -65,7 +65,7 @@ void io_sync(void)
 		io_selector_detect();
 
 		// Sequencer Leds ausschalten
-		io_sequencer_presync();
+		io_sequencer_presync(cycle);
 
 		// Multiplexer umschalten
 		io_select(cycle);
