@@ -17,20 +17,22 @@
  */
 volatile midi_clock_handler clock_callback;
 
-/**
- * gespeicherter Clock-Prescaler
- */
-volatile uint8_t clock_callback_prescale;
+// TODO: in eine Struct verpacken
+typedef struct {
+	// Clock-Interrupt pausiert
+	unsigned paused:1;
 
-/**
- * Clock-Counter-Reset, abgeletitet von der gewünschten Beats-Zahl
- */
-volatile uint8_t clock_callback_reset;
+	// gespeicherter Clock-Prescaler
+	unsigned prescale:7;
 
-/**
- * Zähler der interupt-routine
- */
-volatile uint8_t clock_callback_cnt;
+	// Clock-Counter-Reset, abgeletitet von der gewünschten Beats-Zahl
+	uint8_t reset;
+
+	// Zähler der interupt-routine
+	uint8_t clk;
+} midi_clock_interrupt_state_t;
+
+volatile midi_clock_interrupt_state_t midi_clock_interrupt_state;
 
 /**
  * 8-Bit-Feld zum speichern der derzeit aktiven Instrumente
@@ -67,10 +69,8 @@ void midi_init(void)
 	// Das TransmitEnable-Bit und das ReceiveEnable-Bit im UartControlAndStatusRegisterB setzen
 	SETBITS(UCSRB, BIT(TXEN) | BIT(RXEN));
 
-	// Variablen nullen
-	clock_callback = NULL;
-	clock_callback_prescale = 1;
-	clock_callback_cnt = 0;
+	// Status nullen
+	memset(&midi_clock_interrupt_state, 0, sizeof(midi_clock_interrupt_state_t));
 }
 
 /*
@@ -88,10 +88,10 @@ void midi_set_clock_interrupt(midi_clock_handler cb, uint8_t prescale, uint8_t b
 	clock_callback = cb;
 
 	// Den Prescaler speichern
-	clock_callback_prescale = prescale;
+	midi_clock_interrupt_state.prescale = prescale;
 
 	// Die Beats-Zahl speichern
-	clock_callback_reset = prescale * beats;
+	midi_clock_interrupt_state.reset = prescale * beats;
 }
 
 /**
@@ -237,42 +237,85 @@ ISR(USART_RXC_vect)
 	// anliegende Nachricht aus dem Puffer lesen
 	uint8_t input = UDR;
 
+	// State aus dem RAM lesen
+	midi_clock_interrupt_state_t state = midi_clock_interrupt_state;
+
+#if 0
+	// a pending command
+	if(last_command)
+	{
+		// save another required byte received
+		data_bytes[--bytes_required] = input;
+
+		if(bytes_required == 0)
+		{
+			// all bytes for that command received
+		}
+	}
+#endif
+
 	// Nachricht auswerten
 	switch(input)
 	{
 		// Eine Clock-Nachricht
 		case MIDI_CLOCK: {
-			// Lokale kopien der volatile-Variablen
-			uint8_t
-				clk = clock_callback_cnt,
-				prescale = clock_callback_prescale,
-				reset = clock_callback_reset;
+			if(state.paused)
+				return;
 
 			// Wenn der Prescaler erreicht wurde
-			if(clk % prescale == 0)
+			if(state.clk % state.prescale == 0)
 			{
 				// den Event-Handler auslösen, dabei den passenden Beat ausrechnen
 				if(clock_callback)
-					clock_callback(clk / prescale);
+					clock_callback(state.clk / state.prescale);
 			}
 
 			// Den Clock-Zähler erhöhen, dabei prüfen ob die max. Beat-Zahl erreicht wurde
-			if(++clk == reset)
+			if(++state.clk == state.reset)
 			{
 				// Den Clock-Zähler zurück setzen
-				clk = 0;
+				state.clk = 0;
 			}
-
-			// Den Clock-Zähler zurück in die volatile-Variable schreiben
-			clock_callback_cnt = clk;
 			break;
 		}
 
-		// Eine Midi-Start-Nachricht
+		// Eine MIDI-Start-Nachricht setzt den Clock-Zähler auf 0 zurück
+		// und aktiviert den Clock-Zähler
 		case MIDI_START: {
 			// Den Clock-Zähler auf 0 zurück fahren
-			clock_callback_cnt = 0;
+			state.clk = 0;
+			state.paused = 0;
 			break;
 		}
+
+		// Eine MIDI-Stop-Nachricht stoppt den Clock-Zähler
+		case MIDI_STOP: {
+			state.paused = 1;
+			break;
+		}
+
+		// Eine MIDI-Ĉontinue-Nachricht aktiviert den Clock-Zähler
+		case MIDI_CONTINUE: {
+			state.paused = 0;
+			break;
+		}
+
+#if 0
+		case MIDI_SONG_POSITION_POINTER: {
+			last_command = MIDI_SONG_POSITION_POINTER;
+			bytes_required = 1; // 2 Bytes
+			break;
+		}
+#endif
+
+#if 0
+		case MIDI_SONG_SELECT: {
+			// select saved pattern via Callback
+			state.clk = 0;
+		}
+#endif
 	}
+
+	// State zurück in den RAM schreiben
+	 midi_clock_interrupt_state = state;
 }
