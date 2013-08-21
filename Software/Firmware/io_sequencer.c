@@ -4,6 +4,7 @@
 #include "bits.h"
 
 volatile uint8_t io_sequence = 0;
+volatile uint16_t io_selection = 0b000000000100110;
 
 /**
  * Initialisieren der Sequencer-Boards
@@ -40,16 +41,22 @@ void io_sequencer_sync(uint8_t cycle)
 		cycle /= 2;
 
 		// eine Sequencer-Led
-		if(cycle == sequence) SETBIT(SEQUENCER_PORT, SEQUENCER_PD_LED1);
+		if(cycle+0 == sequence) SETBIT(SEQUENCER_PORT, SEQUENCER_PD_LED1);
 		else CLEARBIT(SEQUENCER_PORT, SEQUENCER_PD_LED1);
 
-		if(cycle + 4 == sequence) SETBIT(SEQUENCER_PORT, SEQUENCER_PD_LED2);
+		if(cycle+4 == sequence) SETBIT(SEQUENCER_PORT, SEQUENCER_PD_LED2);
 		else CLEARBIT(SEQUENCER_PORT, SEQUENCER_PD_LED2);
 	}
 
 	// Button-Led
 	else
 	{
-		
+		cycle /= 2;
+
+		if(BITSET(io_selection, cycle+0)) SETBIT(SEQUENCER_PORT, SEQUENCER_PD_LED1);
+		else CLEARBIT(SEQUENCER_PORT, SEQUENCER_PD_LED1);
+
+		if(BITSET(io_selection, cycle+4)) SETBIT(SEQUENCER_PORT, SEQUENCER_PD_LED2);
+		else CLEARBIT(SEQUENCER_PORT, SEQUENCER_PD_LED2);
 	}
 }
